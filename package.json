@@ -3,5 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/NTUEE-325/web-final.git",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "cd frontend && yarn start",
+    "socket-server": "cd backend && yarn socket-server",
+    "api-server": "cd backend && yarn api-server"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.3",
+    "axios": "^0.24.0",
+    "react-router-dom": "^6.0.2",
+    "socket.io": "^4.4.0",
+    "uuidv4": "^6.2.12"
+  }
 }
