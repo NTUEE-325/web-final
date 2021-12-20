@@ -11,11 +11,10 @@ router.get("/session", (req, res) => {
   if (req.session.userId) {
     res.status(200).send({ id: req.session.userId });
   } else {
-    console.log("hi");
     res.status(403).send();
   }
 });
-router.post("/session", async (req, res) => {
+router.post("/login", async (req, res) => {
   //compare login
   const { userId, password } = req.body;
   const user = await User.findOne({ userId });
@@ -37,7 +36,7 @@ router.post("/session", async (req, res) => {
 
   res.status(200).send();
 });
-router.delete("/session", (req, res) => {
+router.delete("/login", (req, res) => {
   req.session.destroy();
   console.log("Successful logout");
   res.status(200).send();

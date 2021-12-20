@@ -28,14 +28,14 @@ function HomePage(props) {
       </button>
       <button
         onClick={() => {
-          instance.post("/session", { userId: "1", password: "1" });
+          instance.post("/login", { userId: "1", password: "1" });
         }}
       >
         send session
       </button>
       <button
         onClick={() => {
-          instance.delete("/session");
+          instance.delete("/login");
         }}
       >
         delete session
