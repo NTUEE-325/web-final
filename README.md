@@ -14,7 +14,7 @@ sudo apt install redis-server
 ```
 - put MONGO_URL into .env
 - yarn install
-- open a termainals and type 
+- open termainals and type 
 ``` js
 yarn api-server
 yarn socket-server
