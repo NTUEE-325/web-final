@@ -9,9 +9,9 @@ router.get("/", (req, res) => {
 router.get("/session", (req, res) => {
   //console.log(req.session.id);
   if (req.session.userId) {
-    res.status(200).send({ id: req.session.userId });
+    res.status(200).send({ userId: req.session.userId });
   } else {
-    res.status(403).send();
+    res.status(200).send();
   }
 });
 router.post("/login", async (req, res) => {
@@ -40,5 +40,23 @@ router.delete("/login", (req, res) => {
   req.session.destroy();
   console.log("Successful logout");
   res.status(200).send();
+});
+router.post("/signup", async (req, res) => {
+  const { email, userId, password } = req.body;
+  const user = await User.findOne({ userId });
+  if (user) {
+    res.json({ message: "userId used" });
+    console.log("userId used");
+    return;
+  }
+
+  const user2 = await User.findOne({ email });
+  if (user2) {
+    res.json({ message: "email used" });
+    console.log("email used");
+    return;
+  }
+  console.log("success");
+  res.json({ message: "success" });
 });
 export default router;

@@ -4,16 +4,21 @@ import { Login, Logout } from "../features/session/sessionSlices";
 import instance from "../instance";
 function HomePage(props) {
   const login = useSelector((state) => state.session.login);
-  const id = useSelector((state) => state.session.id);
+  const userId = useSelector((state) => state.session.userId);
   const dispatch = useDispatch();
   console.log(document.cookie);
   useEffect(() => {
     const fetch = async () => {
-      const data = await instance.get("/session");
+      const { data } = await instance.get("/session");
+      console.log(data);
       if (data) {
-        dispatch(Login({ id: "logined" }));
+        dispatch(Login({ userId: data.userId }));
+      } else {
+        props.navigate("/login");
       }
+      console.log(userId);
     };
+
     fetch();
   }, []);
   return (
@@ -40,7 +45,7 @@ function HomePage(props) {
       >
         delete session
       </button>
-      {login ? <div>{id}</div> : <div>Not login yet</div>}
+      {login ? <div>{userId}</div> : <div>Not login yet</div>}
       <button onClick={() => props.navigate("/login")}>go to login page</button>
       <button onClick={() => props.navigate("/game")}>go to game</button>
     </div>

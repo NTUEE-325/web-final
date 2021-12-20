@@ -4,12 +4,12 @@ export const sessionSlice = createSlice({
   name: "session",
   initialState: {
     login: false,
-    id: null,
+    userId: null,
   },
   reducers: {
     Login: (state, action) => {
       state.login = true;
-      state.id = action.payload.id;
+      state.userId = action.payload.userId;
     },
     Logout: (state) => {
       state.login = false;
