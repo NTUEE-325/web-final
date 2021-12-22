@@ -56,6 +56,7 @@ router.post("/signup", async (req, res) => {
     console.log("email used");
     return;
   }
+
   console.log("success");
   res.json({ message: "success" });
 });
