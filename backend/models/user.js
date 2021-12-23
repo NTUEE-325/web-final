@@ -7,5 +7,15 @@ const UserSchema = new Schema({
   status: String,
   gameId: String,
 });
+const AppendingUserSchema = new Schema({
+  userId: String,
+  password: String,
+  email: String,
+  status: String,
+  gameId: String,
+  secretToken: String,
+  active: Boolean,
+});
 const User = mongoose.model("User", UserSchema);
-export default User;
+const AppendingUser = mongoose.model("AppendingUser", AppendingUserSchema);
+export { User, AppendingUser };
