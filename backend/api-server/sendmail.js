@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { AppendingUser } from "../models/user.js";
+import { AppendingUser, User } from "../models/user.js";
 import { uuid } from "uuidv4";
 
 const sendEmail = async (email, purpose, data) => {
@@ -41,12 +41,18 @@ const sendEmail = async (email, purpose, data) => {
     };
   }
   if (purpose === "forgotPassword") {
+    const user = await User.findOne({ email: email });
+    // 擋掉email亂輸入還沒做
+    const userId = user.Id;
+    console.log(userId);
+
     mailOptions = {
       from: "hackhaha0808@gmail.com",
       to: email,
       subject: "forgotPassword",
       text: "Reset password",
-      html: '<p>Click <a href="http://localhost:3000/login">here</a> to reset your password</p>',
+      html: `<p>Click <a href=http://localhost:4000/api/forgetPassword/${userId}>here</a>
+       to reset your password</p>`,
     };
   }
 

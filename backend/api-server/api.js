@@ -110,5 +110,27 @@ router.get("/verify/:secretToken", async (req, res) => {
   //req.flash('success_msg','Thank you.You can now login');
   res.redirect("http://localhost:3000/login");
 });
-router.post("/forgetPassword", async (req, res) => {});
+router.post("/forgetPassword/:userId", async (req, res) => {
+  //取得新密碼還沒做
+  const { userId } = req.params;
+  console.log(userId);
+  const user = await User.findOne({ userId: userId });
+  if (!user) {
+    res.status(403).send();
+    return;
+  }
+  console.log(user.password);
+
+  User.updateOne({ userId: userId }, { $set: { password: "" } });
+  // ""裡面應該要塞新的密碼
+  const newUser = await User.findOne({ userId: userId });
+  if (!newUser) {
+    res.status(403).send();
+    return;
+  }
+  console.log(newUser.password);
+
+  res.redirect("http://localhost:3000/login");
+});
+
 export default router;
