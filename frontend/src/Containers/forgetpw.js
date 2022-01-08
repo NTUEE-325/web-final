@@ -3,17 +3,18 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { LoadingButton } from "@mui/lab";
+
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import MailIcon from "@mui/icons-material/Mail";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import instance from "../instance";
-import { useState, useRef } from "react";
+import { useState } from "react";
 function Copyright(props) {
   return (
     <Typography
@@ -34,33 +35,10 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide(props) {
-  const [wrong, setWrong] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  let idRef = useRef(null);
-  let pwRef = useRef(null);
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    const userId = data.get("email");
-    const password = data.get("password");
-    instance
-      .post("/login", { userId, password })
-      .then((res) => props.navigate("/"))
-      .catch((err) => {
-        setWrong(true);
-        idRef.current.value = "";
-        pwRef.current.value = "";
-        idRef.current.focus();
-        setErrorMessage("Wrong Id or password");
-      });
-  };
-
+export default function ForgetPw(props) {
+  const [sent, setSent] = useState(false);
+  const [Message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -84,7 +62,7 @@ export default function SignInSide(props) {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 18,
               mx: 4,
               display: "flex",
               flexDirection: "column",
@@ -92,23 +70,37 @@ export default function SignInSide(props) {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
+              {sent ? <MailIcon /> : <QuestionMarkIcon />}
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Forget Password
             </Typography>
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
+              onSubmit={async (event) => {
+                event.preventDefault();
+                const data = new FormData(event.currentTarget);
+                const email = data.get("email");
+                setLoading(true);
+                instance
+                  .post("/forgetpw", { email })
+                  .then((res) => {
+                    setSent(true);
+                    setMessage("Email sent");
+                    setLoading(false);
+                  })
+                  .catch((err) => {
+                    setSent(true);
+                    setLoading(false);
+                    setMessage("Failed to Send email");
+                  });
+              }}
               sx={{ mt: 1 }}
             >
               <TextField
                 margin="normal"
                 required
-                error={wrong}
-                inputRef={idRef}
-                helperText={errorMessage}
                 fullWidth
                 id="email"
                 label="Email Address/User Id"
@@ -116,47 +108,17 @@ export default function SignInSide(props) {
                 autoComplete="email"
                 autoFocus
               />
-              <TextField
-                margin="normal"
-                required
-                inputRef={pwRef}
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
+
+              <LoadingButton
+                loading={loading}
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link
-                    variant="body2"
-                    onClick={() => props.navigate("./forgetpw")}
-                  >
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link
-                    variant="body2"
-                    onClick={() => props.navigate("./signup")}
-                  >
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+                {sent ? Message : "Send email"}
+              </LoadingButton>
+
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
