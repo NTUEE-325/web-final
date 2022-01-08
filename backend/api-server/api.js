@@ -110,4 +110,5 @@ router.get("/verify/:secretToken", async (req, res) => {
   //req.flash('success_msg','Thank you.You can now login');
   res.redirect("http://localhost:3000/login");
 });
+router.post("/forgetPassword", async (req, res) => {});
 export default router;

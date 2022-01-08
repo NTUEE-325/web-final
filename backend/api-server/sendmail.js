@@ -12,7 +12,7 @@ const sendEmail = async (email, purpose, data) => {
   });
 
   let mailOptions;
-  if (purpose == "signUp") {
+  if (purpose === "signUp") {
     const secretToken = uuid();
     console.log(secretToken);
 
@@ -40,7 +40,7 @@ const sendEmail = async (email, purpose, data) => {
         </p>`,
     };
   }
-  if (purpose == "forgotPassword") {
+  if (purpose === "forgotPassword") {
     mailOptions = {
       from: "hackhaha0808@gmail.com",
       to: email,
