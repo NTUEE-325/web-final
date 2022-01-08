@@ -122,7 +122,7 @@ router.post("/forgetPassword/:userId", async (req, res) => {
   console.log(user.password);
 
   User.updateOne({ userId: userId }, { $set: { password: "" } });
-  // ""裡面應該要塞新的密碼
+  // ""裡面應該要塞新的密碼，且需要進行hash
   const newUser = await User.findOne({ userId: userId });
   if (!newUser) {
     res.status(403).send();
