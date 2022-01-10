@@ -148,35 +148,38 @@ router.post("/forgetpw", async (req, res) => {
   //顯示去信箱確認信件
 });
 router.post("/resetpw", async (req, res) => {
-  const newPassword = req.body;
-  console.log(req.query);
-  const { secretToken } = req.params;
-  console.log(secretToken);
+  const { password, secretToken } = req.body;
+  //console.log(req.query);
+  //const { secretToken } = req.params;
+  console.log(password);
+  console.log(secretToken.split("=")[1]);
 
   const appendingUser = await AppendingUser.findOne({
-    secretToken: secretToken.trim(),
+    secretToken: secretToken.split("=")[1],
   });
   if (!appendingUser) {
     res.status(403).send();
     return;
   }
+  console.log(appendingUser);
 
-  User.updateOne(
-    { userId: appendingUser.userId },
-    { $set: { password: newPassword } }
-  );
-  const newUser = await User.findOne({ userId: appendingUser.userId });
+  let doc = await User.findOne({ userId: appendingUser.userId });
+  console.log(doc);
+  doc.password = password;
+  await doc.save();
+
+  const newUser = await User.findOne({ password: password });
   if (!newUser) {
     res.status(403).send();
     return;
   }
   console.log(newUser.password);
 
-  await AppendingUser.findOneAndDelete({
-    secretToken: secretToken.trim(),
-  });
+  /*await AppendingUser.findOneAndDelete({
+    secretToken: secretToken.split("=")[1],
+  });*/
 
-  res.redirect("http://localhost:3000/login");
+  res.status(202).send();
 });
 
 export default router;

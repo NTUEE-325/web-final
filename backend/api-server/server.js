@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import session from "express-session";
 import apiRouter from "./api.js";
 import redis from "ioredis";
@@ -24,6 +25,7 @@ const sessionOption = {
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  //res.header("Access-Control-Allow-Origin", "http://localhost:4000");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -32,6 +34,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
+//app.use(cors());
 app.use(session(sessionOption));
 app.use(express.json());
 app.use("/api", apiRouter);
