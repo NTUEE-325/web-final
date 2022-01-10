@@ -69,7 +69,7 @@ const sendEmail = async (email, purpose, data) => {
       to: email,
       subject: "forgotPassword",
       text: "Reset password",
-      html: `<p>Click <a href=http://localhost:4000/api/resetpw/${secretToken}>here</a>
+      html: `<p>Click <a href=http://localhost:3000/resetpw?secretToken=${secretToken}>here</a>
        to reset your password</p>`,
     };
   }

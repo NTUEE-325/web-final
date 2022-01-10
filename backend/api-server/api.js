@@ -147,8 +147,9 @@ router.post("/forgetpw", async (req, res) => {
   res.json({ message: "success" });
   //顯示去信箱確認信件
 });
-router.post("/resetpw/:secretToken", async (req, res) => {
+router.post("/resetpw", async (req, res) => {
   const newPassword = req.body;
+  console.log(req.query);
   const { secretToken } = req.params;
   console.log(secretToken);
 
