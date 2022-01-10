@@ -38,6 +38,8 @@ app.use("/api", apiRouter);
 
 const db = mongoose.connection;
 
+console.log(process.env.MONGO_URL);
+
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

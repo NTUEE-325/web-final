@@ -20,7 +20,7 @@ const sendEmail = async (email, purpose, data) => {
       userId: data.userId,
       password: data.password,
       email: data.email,
-      status: "offline",
+      status: "signup",
       gameId: "123",
       secretToken: secretToken,
       active: false,
@@ -41,17 +41,35 @@ const sendEmail = async (email, purpose, data) => {
     };
   }
   if (purpose === "forgotPassword") {
-    const user = await User.findOne({ email: email });
+    const secretToken = uuid();
+    console.log(secretToken);
+
+    const appendingData = {
+      userId: data.userId,
+      password: data.password,
+      email: data.email,
+      status: "forgetPassword",
+      gameId: "123",
+      secretToken: secretToken,
+      active: false,
+    };
+
+    const user = new AppendingUser(appendingData);
+    user.save();
+
+    /*const user = await User.findOne({ email: email });
     // 擋掉email亂輸入還沒做
     const userId = user.Id;
-    console.log(userId);
+    console.log(userId);*/
+
+    console.log(email);
 
     mailOptions = {
       from: "hackhaha0808@gmail.com",
       to: email,
       subject: "forgotPassword",
       text: "Reset password",
-      html: `<p>Click <a href=http://localhost:4000/api/forgetPassword/${userId}>here</a>
+      html: `<p>Click <a href=http://localhost:4000/api/resetpw/${secretToken}>here</a>
        to reset your password</p>`,
     };
   }
