@@ -85,7 +85,10 @@ export default function ResetPw(props) {
                 password = await bcrypt.hash(password, 10);
                 setLoading(true);
                 instance
-                  .post("/resetpw", { password })
+                  .post("/resetpw", {
+                    password,
+                    secretToken: window.location.search,
+                  })
                   .then((res) => {
                     setSent(true);
                     setMessage("Password Reset");
