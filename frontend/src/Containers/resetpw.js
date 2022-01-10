@@ -97,6 +97,7 @@ export default function ResetPw(props) {
                     setSent(true);
                     setMessage("Password Reset");
                     setLoading(false);
+                    props.navigate("./signin");
                   })
                   .catch((err) => {
                     setSent(true);
