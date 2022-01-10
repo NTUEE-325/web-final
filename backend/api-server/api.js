@@ -18,7 +18,9 @@ router.get("/session", (req, res) => {
 router.post("/login", async (req, res) => {
   //compare login
   const { userId, password } = req.body;
-  const user = await User.findOne({ userId });
+  const user = await User.findOne({
+    $or: [{ userId: userId }, { email: userId }],
+  });
   if (!user) {
     res.status(403).send();
     console.log("User not found");
@@ -31,7 +33,7 @@ router.post("/login", async (req, res) => {
     return;
   }
   if (!req.session.userId) {
-    req.session.userId = userId;
+    req.session.userId = user.userId;
   }
   console.log("Successful login");
 
@@ -77,6 +79,7 @@ router.post("/signup", async (req, res) => {
 
   console.log("success");
   res.json({ message: "success" });
+  //res.redirect("http://localhost:3000/login");
 });
 router.get("/verify/:secretToken", async (req, res) => {
   const { secretToken } = req.params;
@@ -84,6 +87,7 @@ router.get("/verify/:secretToken", async (req, res) => {
   const appendingUser = await AppendingUser.findOne({
     secretToken: secretToken.trim(),
   });
+  console.log(appendingUser);
   if (!appendingUser) {
     res.status(403).send();
     return;
@@ -110,4 +114,68 @@ router.get("/verify/:secretToken", async (req, res) => {
   //req.flash('success_msg','Thank you.You can now login');
   res.redirect("http://localhost:3000/login");
 });
+router.post("/forgetpw", async (req, res) => {
+  const { email } = req.body;
+  //console.log(email);
+  const user = await User.findOne({
+    email,
+  });
+  if (!user) {
+    res.status(403).send();
+    console.log("User didn't signup before.");
+    return;
+  }
+
+  //const email = user.email;
+  const data = {
+    email: user.email,
+    userId: user.userId,
+    password: user.password,
+  };
+
+  const checkUser = await AppendingUser.findOne({ email: email });
+  if (checkUser) {
+    res.status(406);
+    res.json({ message: "forgetPassword mail already sended" });
+    console.log("forgetPassword mail already sended");
+    return;
+  }
+
+  await sendEmail(email, "forgotPassword", data);
+
+  console.log("success");
+  res.json({ message: "success" });
+  //顯示去信箱確認信件
+});
+router.post("/resetpw/:secretToken", async (req, res) => {
+  const newPassword = req.body;
+  const { secretToken } = req.params;
+  console.log(secretToken);
+
+  const appendingUser = await AppendingUser.findOne({
+    secretToken: secretToken.trim(),
+  });
+  if (!appendingUser) {
+    res.status(403).send();
+    return;
+  }
+
+  User.updateOne(
+    { userId: appendingUser.userId },
+    { $set: { password: newPassword } }
+  );
+  const newUser = await User.findOne({ userId: appendingUser.userId });
+  if (!newUser) {
+    res.status(403).send();
+    return;
+  }
+  console.log(newUser.password);
+
+  await AppendingUser.findOneAndDelete({
+    secretToken: secretToken.trim(),
+  });
+
+  res.redirect("http://localhost:3000/login");
+});
+
 export default router;

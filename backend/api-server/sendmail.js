@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { AppendingUser } from "../models/user.js";
+import { AppendingUser, User } from "../models/user.js";
 import { uuid } from "uuidv4";
 
 const sendEmail = async (email, purpose, data) => {
@@ -12,7 +12,7 @@ const sendEmail = async (email, purpose, data) => {
   });
 
   let mailOptions;
-  if (purpose == "signUp") {
+  if (purpose === "signUp") {
     const secretToken = uuid();
     console.log(secretToken);
 
@@ -20,7 +20,7 @@ const sendEmail = async (email, purpose, data) => {
       userId: data.userId,
       password: data.password,
       email: data.email,
-      status: "offline",
+      status: "signup",
       gameId: "123",
       secretToken: secretToken,
       active: false,
@@ -40,13 +40,37 @@ const sendEmail = async (email, purpose, data) => {
         </p>`,
     };
   }
-  if (purpose == "forgotPassword") {
+  if (purpose === "forgotPassword") {
+    const secretToken = uuid();
+    console.log(secretToken);
+
+    const appendingData = {
+      userId: data.userId,
+      password: data.password,
+      email: data.email,
+      status: "forgetPassword",
+      gameId: "123",
+      secretToken: secretToken,
+      active: false,
+    };
+
+    const user = new AppendingUser(appendingData);
+    user.save();
+
+    /*const user = await User.findOne({ email: email });
+    // 擋掉email亂輸入還沒做
+    const userId = user.Id;
+    console.log(userId);*/
+
+    console.log(email);
+
     mailOptions = {
       from: "hackhaha0808@gmail.com",
       to: email,
       subject: "forgotPassword",
       text: "Reset password",
-      html: '<p>Click <a href="http://localhost:3000/login">here</a> to reset your password</p>',
+      html: `<p>Click <a href=http://localhost:4000/api/resetpw/${secretToken}>here</a>
+       to reset your password</p>`,
     };
   }
 
