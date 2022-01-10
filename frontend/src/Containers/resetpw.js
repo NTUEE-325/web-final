@@ -81,6 +81,10 @@ export default function ResetPw(props) {
               onSubmit={async (event) => {
                 event.preventDefault();
                 const data = new FormData(event.currentTarget);
+                if (data.get("password") !== data.get("password2")) {
+                  setMessage("Password not same");
+                  return;
+                }
                 let password = data.get("password");
                 password = await bcrypt.hash(password, 10);
                 setLoading(true);
@@ -105,6 +109,7 @@ export default function ResetPw(props) {
               <TextField
                 margin="normal"
                 required
+                type="password"
                 fullWidth
                 id="password"
                 label="Password"
@@ -116,6 +121,7 @@ export default function ResetPw(props) {
                 margin="normal"
                 required
                 fullWidth
+                type="password"
                 id="password2"
                 label="Confirm password"
                 name="password2"
