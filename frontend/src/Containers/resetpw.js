@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { LoadingButton } from "@mui/lab";
-
+import bcrypt from "bcryptjs";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import MailIcon from "@mui/icons-material/Mail";
 import Typography from "@mui/material/Typography";
@@ -35,7 +35,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function ForgetPw(props) {
+export default function ResetPw(props) {
   const [sent, setSent] = useState(false);
   const [Message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -73,7 +73,7 @@ export default function ForgetPw(props) {
               {sent ? <MailIcon /> : <QuestionMarkIcon />}
             </Avatar>
             <Typography component="h1" variant="h5">
-              Forget Password
+              Reset Password
             </Typography>
             <Box
               component="form"
@@ -81,19 +81,20 @@ export default function ForgetPw(props) {
               onSubmit={async (event) => {
                 event.preventDefault();
                 const data = new FormData(event.currentTarget);
-                const email = data.get("email");
+                let password = data.get("password");
+                password = await bcrypt.hash(password, 10);
                 setLoading(true);
                 instance
-                  .post("/forgetpw", { email })
+                  .post("/resetpw", { password })
                   .then((res) => {
                     setSent(true);
-                    setMessage("Email sent");
+                    setMessage("Password Reset");
                     setLoading(false);
                   })
                   .catch((err) => {
                     setSent(true);
                     setLoading(false);
-                    setMessage("Failed to Send email");
+                    setMessage("Failed to reset password");
                   });
               }}
               sx={{ mt: 1 }}
@@ -102,11 +103,20 @@ export default function ForgetPw(props) {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="password"
+                label="Password"
+                name="password"
+                autoComplete="password"
                 autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="password2"
+                label="Confirm password"
+                name="password2"
+                autoComplete="password2"
               />
 
               <LoadingButton
@@ -116,7 +126,7 @@ export default function ForgetPw(props) {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                {sent ? Message : "Send email"}
+                {sent ? Message : "Reset"}
               </LoadingButton>
 
               <Copyright sx={{ mt: 5 }} />

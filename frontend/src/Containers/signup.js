@@ -19,6 +19,7 @@ import { useRef, useState } from "react";
 import bcrypt from "bcryptjs";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { CircularProgress } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -41,6 +42,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp(props) {
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [submit, setSubmit] = useState(false);
   const [wrongEmail, setWrongEmail] = useState(false);
   const [wrongUserId, setWrongUserId] = useState(false);
@@ -115,22 +118,27 @@ export default function SignUp(props) {
       return;
     }
     password = await bcrypt.hash(password, 10);
-    console.log(password);
-
-    const { data } = await instance.post("signup", { email, userId, password });
-    setSubmit(false);
-    setWrongEmail(false);
-    setWrongUserId(false);
-    setWrongRePassword(false);
-    setWrongPassword(false);
-    if (data.message === "success") {
-      console.log("varify your account with your email");
-    } else if (data.message === "email used") {
-      setErrorMessageEmail("email already used");
-      setWrongEmail(true);
-    } else if (data.message === "userId used") {
-      setErrorMessageUserId("User ID already used");
-      setWrongUserId(true);
+    // console.log(password);
+    try {
+      const { data } = await instance.post("signup", {
+        email,
+        userId,
+        password,
+      });
+      setSubmit(false);
+      setWrongEmail(false);
+      setWrongUserId(false);
+      setWrongRePassword(false);
+      setWrongPassword(false);
+      if (data.message === "success") {
+        console.log("varify your account with your email");
+        setSuccess(true);
+        setOpen(true);
+      }
+    } catch (e) {
+      setOpen(true);
+      setSuccess(false);
+      setSubmit(false);
     }
   };
 
@@ -250,7 +258,7 @@ export default function SignUp(props) {
 
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link variant="body2" onClick={() => props.navigate("./login")}>
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -258,6 +266,30 @@ export default function SignUp(props) {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
+        <Snackbar
+          anchorOrigin={{ vertical: "button", horizontal: "left" }}
+          open={open}
+          autoHideDuration={3000}
+          onClose={() => setOpen(false)}
+        >
+          {success ? (
+            <Alert
+              onClose={() => setOpen(false)}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Receive the verify email
+            </Alert>
+          ) : (
+            <Alert
+              onClose={() => setOpen(false)}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Sign up failed
+            </Alert>
+          )}
+        </Snackbar>
       </Container>
     </ThemeProvider>
   );
