@@ -1,15 +1,12 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Appbar from "./appbar";
 import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
+import { Joingame } from "../features/session/sessionSlices";
 import useGame from "../Hooks/useGame";
-import {
-  connectWebSocket,
-  initWebSocket,
-  joinRoom,
-} from "../features/game/socketSlices";
+import { SocketContext } from "../socket";
 import {
   Card,
   CardActions,
@@ -33,41 +30,28 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 export default function Rooms(props) {
-  const [rooms, setRooms] = useState([
-    { name: "123", player: 4, capacity: 4, difficulty: "easy" },
-    { name: "456", player: 3, capacity: 4, difficulty: "easy" },
-    { name: "999", player: 1, capacity: 4, difficulty: "easy" },
-  ]);
+  const [rooms, setRooms] = useState([]);
   const userId = useSelector((state) => state.session.userId);
+  const roomId = useSelector((state) => state.session.roomId);
   const [open, setOpen] = useState(false);
-  const { connectWebSocket, joinRoom, ws } = useGame();
+  const ws = React.useContext(SocketContext);
+  const dispatch = useDispatch();
+  // const { connectWebSocket, joinRoom, ws } = useGame();
   useEffect(() => {
     const fetch = async () => {
       const { data } = await instance.get("/rooms");
       setRooms(data);
     };
+    ws.on("addRoom", (data) => {
+      console.log(data);
+      dispatch(Joingame({ roomId: data.gameId }));
+    });
     fetch();
   }, []);
-  useEffect(() => {
-    if (!ws) {
-      connectWebSocket();
-    }
-  }, []);
-  useEffect(() => {
-    if (ws) {
-      ws.on("addRoom", (data) => {
-        console.log(data);
-        console.log(data.msg);
-        if (data.msg === "succcessful") {
-          console.log("successful");
-          props.navigate(`room?roomId=${data.gameId}`);
-        } else {
-          setOpen(true);
-          console.log("failed");
-        }
-      });
-    }
-  }, ws);
+  if (roomId.length > 0) {
+    props.navigate(`./room?roomId=${roomId}`);
+  }
+
   return (
     <>
       <Appbar navigate={props.navigate} />
@@ -92,9 +76,9 @@ export default function Rooms(props) {
               id="demo-simple-select"
               label="Difficulty"
             >
-              <MenuItem value={10}>Easy</MenuItem>
-              <MenuItem value={20}>Normal</MenuItem>
-              <MenuItem value={30}>Hard</MenuItem>
+              <MenuItem>Easy</MenuItem>
+              <MenuItem>Normal</MenuItem>
+              <MenuItem>Hard</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -125,7 +109,7 @@ export default function Rooms(props) {
                       <Button
                         sx={{ float: "right" }}
                         onClick={() => {
-                          joinRoom({ userId, roomId: room.name });
+                          ws.emit("joinRoom", { userId, roomId: room.name });
                         }}
                       >
                         Join Room
