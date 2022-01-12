@@ -5,6 +5,7 @@ export const sessionSlice = createSlice({
   initialState: {
     login: false,
     userId: null,
+    roomId: "",
   },
   reducers: {
     Login: (state, action) => {
@@ -14,9 +15,13 @@ export const sessionSlice = createSlice({
     Logout: (state) => {
       state.login = false;
     },
+    Joingame: (state, action) => {
+      console.log(action.payload);
+      state.roomId = action.payload.roomId;
+    },
   },
 });
 
-export const { Login, Logout } = sessionSlice.actions;
+export const { Login, Logout, Joingame } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
