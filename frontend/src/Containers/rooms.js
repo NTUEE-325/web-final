@@ -3,7 +3,13 @@ import Appbar from "./appbar";
 import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
 import { styled } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
 import useGame from "../Hooks/useGame";
+import {
+  connectWebSocket,
+  initWebSocket,
+  joinRoom,
+} from "../features/game/socketSlices";
 import {
   Card,
   CardActions,
@@ -11,13 +17,13 @@ import {
   Button,
   Stack,
   Paper,
-  Box,
   Grid,
   Select,
   FormControl,
   InputLabel,
   MenuItem,
-  TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 const Item = styled(Paper)(({ theme }) => ({
@@ -32,16 +38,22 @@ export default function Rooms(props) {
     { name: "456", player: 3, capacity: 4, difficulty: "easy" },
     { name: "999", player: 1, capacity: 4, difficulty: "easy" },
   ]);
-  const { connectWebSocket, joinRoom, ws } = useGame();
   const userId = useSelector((state) => state.session.userId);
-
+  const ws = useSelector((state) => state.game.ws);
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetch = async () => {
       const { data } = await instance.get("/rooms");
       setRooms(data);
+      dispatch(connectWebSocket());
     };
     fetch();
   }, []);
+  useEffect(() => {
+    dispatch(initWebSocket());
+  }, [ws]);
+
   return (
     <>
       <Appbar navigate={props.navigate} />
@@ -99,14 +111,7 @@ export default function Rooms(props) {
                       <Button
                         sx={{ float: "right" }}
                         onClick={async () => {
-                          const data = await instance.post("/joinRoom", {
-                            userId,
-                            roomId: room.name,
-                          });
-                          if (data === "success") {
-                            props.navigate(`./room/${data}`);
-                          } else {
-                          }
+                          dispatch(joinRoom({ userId, roomId: room.name }));
                         }}
                       >
                         Join Room
@@ -119,6 +124,20 @@ export default function Rooms(props) {
           </Stack>
         </Grid>
       </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: "button", horizontal: "left" }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Join room failed
+        </Alert>
+      </Snackbar>
     </>
   );
 }
