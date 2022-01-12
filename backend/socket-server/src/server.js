@@ -33,11 +33,19 @@ db.once("open", () => {
     });
     socket.on("joinRoom", async ({ userId, roomId }) => {
       console.log("joinRoom");
+      console.log(userId);
       const game = await Game.findOne({ id: roomId });
+      if (userId === undefined) {
+        console.log("Player not login yet");
+        io.emit("addRoom", "failed");
+      }
       if (game.players.length < 4) {
         socket.join(roomId);
         console.log("successful join room");
         io.emit("addRoom", "successful");
+        game.players.push({ playerId: userId, playerHand: [], playerJob: 0 });
+        console.log(game);
+        game.save();
       } else {
         console.log("Player already full");
         io.emit("addRoom", "failed");
