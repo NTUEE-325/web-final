@@ -49,16 +49,21 @@ export default function Rooms(props) {
     fetch();
   }, []);
   useEffect(() => {
-    connectWebSocket();
+    if (!ws) {
+      connectWebSocket();
+    }
   }, []);
   useEffect(() => {
     if (ws) {
-      console.log("listening");
       ws.on("addRoom", (data) => {
+        console.log(data);
+        console.log(data.msg);
         if (data.msg === "succcessful") {
+          console.log("successful");
           props.navigate(`room?roomId=${data.gameId}`);
         } else {
           setOpen(true);
+          console.log("failed");
         }
       });
     }

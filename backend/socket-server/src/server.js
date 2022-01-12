@@ -35,7 +35,7 @@ db.once("open", () => {
       console.log("joinRoom");
       console.log(userId);
       const game = await Game.findOne({ id: roomId });
-      if (userId === undefined) {
+      if (userId === null) {
         console.log("Player not login yet");
         io.emit("addRoom", { msg: "failed", gameId: "" });
         return;
