@@ -10,8 +10,5 @@
     "api-server": "cd backend && yarn api-server",
     "initialize": "node ./backend/api-server/initdata.js",
     "mailtest": "node ./backend/api-server/sendmail.js"
-  },
-  "dependencies": {
-    "nodemailer": "^6.7.2"
   }
 }

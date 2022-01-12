@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useGame from "../Hooks/useGame";
+import Appbar from "./appbar";
 import webSocket from "socket.io-client";
 import { useState } from "react";
 import {
@@ -44,6 +45,7 @@ function Game(props) {
   }, [ws]);
   return (
     <div>
+      <Appbar navigate={props.navigate} />
       <button onClick={() => props.navigate("/")}>back to homepage</button>
       <button onClick={() => joinRoom("1")}>click me to add room</button>
       <button

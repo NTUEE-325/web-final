@@ -5,6 +5,8 @@ import SignUpPage from "./signup";
 import ForgetPw from "./forgetpw";
 import ResetPw from "./resetpw";
 import Rooms from "./rooms";
+import Friends from "./friends";
+import History from "./history";
 import { Routes, Route, useNavigate } from "react-router-dom";
 function Guide(props) {
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ function Guide(props) {
         <Route path="/forgetpw" element={<ForgetPw navigate={navigate} />} />
         <Route path="/resetpw" element={<ResetPw navigate={navigate} />} />
         <Route path="/rooms" element={<Rooms navigate={navigate} />} />
+        <Route path="/friends" element={<Friends navigate={navigate} />} />
+        <Route path="/history" element={<History navigate={navigate} />} />
       </Routes>
     </div>
   );
