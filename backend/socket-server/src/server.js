@@ -38,6 +38,7 @@ db.once("open", () => {
       if (userId === undefined) {
         console.log("Player not login yet");
         io.emit("addRoom", { msg: "failed", gameId: "" });
+        return;
       }
       if (game.players.length < 4) {
         socket.join(roomId);
