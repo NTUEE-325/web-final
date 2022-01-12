@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv-defaults";
 import express from "express";
 import init from "./init.js";
+import Game from "../../models/game.js";
 const app = express();
 const server = http.createServer(app);
 
@@ -30,10 +31,16 @@ db.once("open", () => {
     socket.on("getMessage", (arg) => {
       console.log(arg);
     });
-    socket.on("joinRoom", (roomId) => {
-      socket.join(roomId);
-      console.log("successful join room");
-      io.emit("getMessage", "successful add room" + roomId);
+    socket.on("joinRoom", async ({ userId, roomId }) => {
+      const game = await Game.findOne({ id: roomId });
+      if (game.players.length < 4) {
+        socket.join(roomId);
+        console.log("successful join room");
+        io.emit("addRoom", "successful");
+      } else {
+        console.log("Player already full");
+        io.emit("addRoom", "failed");
+      }
     });
     socket.on("queryGame", (gameId) => {
       console.log("data queried");

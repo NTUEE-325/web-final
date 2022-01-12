@@ -35,12 +35,13 @@ export default function Rooms(props) {
   const { connectWebSocket, joinRoom, ws } = useGame();
   const userId = useSelector((state) => state.session.userId);
 
-  //   useEffect(() => {
-  //     const fetch = async () => {
-  //       const { data } = await instance.get("/rooms");
-  //       setRooms(data);
-  //     };
-  //   });
+  useEffect(() => {
+    const fetch = async () => {
+      const { data } = await instance.get("/rooms");
+      setRooms(data);
+    };
+    fetch();
+  }, []);
   return (
     <>
       <Appbar navigate={props.navigate} />

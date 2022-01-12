@@ -1,5 +1,6 @@
 import express from "express";
 import { User, AppendingUser } from "../models/user.js";
+import Game from "../models/game.js";
 import sendEmail from "./sendmail.js";
 import bcrypt from "bcryptjs";
 const router = express.Router();
@@ -180,6 +181,19 @@ router.post("/resetpw", async (req, res) => {
   });*/
 
   res.status(202).send();
+});
+router.get("/rooms", async (req, res) => {
+  const Games = await Game.find();
+
+  const Rooms = Games.map((game) => {
+    return {
+      name: game.id,
+      player: game.players.length,
+      capacity: 4,
+      difficulty: game.difficulty,
+    };
+  });
+  return res.status(200).send(Rooms);
 });
 
 export default router;

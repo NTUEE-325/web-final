@@ -9,6 +9,7 @@ const GameSchema = new Schema({
       playerJob: Number,
     },
   ],
+  difficulty: String,
   playerDeck: [Number],
   discardPlayerDeck: [Number],
   virusDeck: [Number],

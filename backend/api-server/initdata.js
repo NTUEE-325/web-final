@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv-defaults";
 import { User } from "../models/user.js";
+import Game from "../models/game.js";
 import bcrypt from "bcryptjs";
 
 dotenv.config();
@@ -42,6 +43,69 @@ const datas = [
     gameId: "0",
   },
 ];
+
+const games = [
+  {
+    id: "123",
+    players: [
+      {
+        playerId: "ric",
+        playerHand: [1, 2, 3],
+        playerJob: 2,
+      },
+      {
+        playerId: "jerry",
+        playerHand: [5, 8, 9],
+        playerJob: 1,
+      },
+      {
+        playerId: "johnny",
+        playerHand: [13, 20, 44],
+        playerJob: 5,
+      },
+    ],
+    difficulty: "Normal",
+    playerDeck: [11, 12, 14, 15, 16],
+    discardPlayerDeck: [20, 21, 22],
+    virusDeck: [1, 2, 3, 4],
+    discardVirusDeck: [5, 6, 7],
+    activeVirus: [1, 2, 3, 4],
+    virus1: [1, 1, 2, 3, 6],
+    virus2: [2, 2, 10],
+    virus3: [10, 11, 11, 11],
+    virus4: [9, 9, 7, 7, 7],
+  },
+  {
+    id: "789",
+    players: [
+      {
+        playerId: "123",
+        playerHand: [1, 2, 3],
+        playerJob: 2,
+      },
+      {
+        playerId: "tim",
+        playerHand: [5, 8, 9],
+        playerJob: 1,
+      },
+      {
+        playerId: "jack",
+        playerHand: [13, 20, 44],
+        playerJob: 5,
+      },
+    ],
+    difficulty: "Hard",
+    playerDeck: [11, 12, 14, 15, 16],
+    discardPlayerDeck: [20, 21, 22],
+    virusDeck: [1, 2, 3, 4],
+    discardVirusDeck: [5, 6, 7],
+    activeVirus: [1, 2, 3, 4],
+    virus1: [1, 1, 2, 3, 6],
+    virus2: [2, 2, 10],
+    virus3: [10, 11, 11, 11],
+    virus4: [9, 9, 7, 7, 7],
+  },
+];
 // datas.forEach(async (data) => {
 //   data.password = await bcrypt.hash(data.password, 10);
 //   console.log(data.password);
@@ -54,6 +118,11 @@ db.once("open", async () => {
     data.password = await bcrypt.hash(data.password, 10);
     const user = new User(data);
     user.save();
+  });
+  games.forEach(async (game) => {
+    await Game.deleteMany({});
+    const gameData = new Game(game);
+    gameData.save();
   });
   console.log("finish saving data");
 });
