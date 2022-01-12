@@ -2,27 +2,25 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Login, Logout } from "../features/session/sessionSlices";
 import instance from "../instance";
+import ResponsiveAppBar from "./appbar";
 function HomePage(props) {
   const login = useSelector((state) => state.session.login);
   const userId = useSelector((state) => state.session.userId);
   const dispatch = useDispatch();
-  console.log(document.cookie);
   useEffect(() => {
     const fetch = async () => {
       const { data } = await instance.get("/session");
       console.log(data);
       if (data) {
         dispatch(Login({ userId: data.userId }));
-      } else {
-        props.navigate("/login");
       }
-      console.log(userId);
     };
 
     fetch();
   }, []);
   return (
     <div>
+      <ResponsiveAppBar navigate={props.navigate} />
       <button
         onClick={async () => {
           const data = await instance.get("/session");
