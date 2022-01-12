@@ -19,28 +19,28 @@ const datas = [
     password: "1",
     email: "1@gmail.com",
     status: "offline",
-    gameId: "0",
+    gameId: "",
   },
   {
     userId: "2",
     password: "2",
     email: "2@gmail.com",
     status: "offline",
-    gameId: "0",
+    gameId: "",
   },
   {
     userId: "3",
     password: "3",
     email: "3@gmail.com",
     status: "offline",
-    gameId: "0",
+    gameId: "",
   },
   {
     userId: "4",
     password: "4",
     email: "4@gmail.com",
     status: "offline",
-    gameId: "0",
+    gameId: "",
   },
 ];
 

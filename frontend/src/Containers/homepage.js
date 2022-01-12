@@ -23,6 +23,16 @@ function HomePage(props) {
       <ResponsiveAppBar navigate={props.navigate} />
       <button
         onClick={async () => {
+          await instance.post("/createRoom", {
+            userId: userId,
+            difficulty: "normal",
+          });
+        }}
+      >
+        QuickStart
+      </button>
+      <button
+        onClick={async () => {
           const data = await instance.get("/session");
           console.log(data);
         }}

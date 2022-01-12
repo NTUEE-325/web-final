@@ -5,6 +5,7 @@ import dotenv from "dotenv-defaults";
 import express from "express";
 import init from "./init.js";
 import Game from "../../models/game.js";
+import { User } from "../../models/user.js";
 const app = express();
 const server = http.createServer(app);
 
@@ -35,18 +36,26 @@ db.once("open", () => {
       console.log("joinRoom");
       console.log(userId);
       const game = await Game.findOne({ id: roomId });
+      const user = await User.findOne({ userId: userId });
       if (userId === undefined) {
         console.log("Player not login yet");
         io.emit("addRoom", { msg: "failed", gameId: "" });
         return;
       }
       if (game.players.length < 4) {
-        socket.join(roomId);
-        console.log("successful join room");
-        io.emit("addRoom", { msg: "successful", gameId: roomId });
-        game.players.push({ playerId: userId, playerHand: [], playerJob: 0 });
-        console.log(game);
-        game.save();
+        if (user.gameId === "") {
+          socket.join(roomId);
+          console.log("successful join room");
+          io.emit("addRoom", { msg: "successful", gameId: roomId });
+          game.players.push({ playerId: userId, playerHand: [], playerJob: 0 });
+          console.log(game);
+          game.save();
+          user.gameId = roomId;
+          user.save();
+        } else {
+          console.log("Player already in game");
+          io.emit("addRoom", { msg: "failed", gameId: "" });
+        }
       } else {
         console.log("Player already full");
         io.emit("addRoom", { msg: "failed", gameId: "" });

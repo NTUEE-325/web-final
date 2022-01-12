@@ -195,5 +195,51 @@ router.get("/rooms", async (req, res) => {
   });
   return res.status(200).send(Rooms);
 });
+router.post("/createRoom", async (req, res) => {
+  const { userId, difficulty } = req.body;
+
+  if (userId === undefined) {
+    return res.status(403).send("User not login");
+  }
+
+  let user = await User.findOne({ userId: userId });
+  if (user.gameId !== "") {
+    return res.status(403).send("User already in game");
+  }
+
+  let id = Math.floor(Math.random() * 1000000);
+  let check = await Game.findOne({ id: id });
+
+  while (check) {
+    id = Math.floor(Math.random() * 1000000);
+    check = await Game.findOne({ id: id });
+  }
+
+  let data = {
+    id: id,
+    players: [
+      {
+        playerId: userId,
+        playerHand: [],
+        playerJob: 0,
+      },
+    ],
+    difficulty: difficulty,
+    playerDeck: [],
+    discardPlayerDeck: [],
+    virusDeck: [],
+    discardVirusDeck: [],
+    activeVirus: [],
+    virus1: [],
+    virus2: [],
+    virus3: [],
+    virus4: [],
+  };
+  const game = new Game(data);
+  game.save();
+
+  user.gameId = id;
+  user.save();
+});
 
 export default router;
