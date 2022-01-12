@@ -39,8 +39,8 @@ const useGame = () => {
       setVirus4(data.virus4);
     });
   };
-  const joinRoom = (roomId) => {
-    ws.emit("joinRoom", roomId);
+  const joinRoom = ({ userId, roomId }) => {
+    ws.emit("joinRoom", { userId, roomId });
   };
   const queryGame = (gameId) => {
     ws.emit("queryGame", gameId);

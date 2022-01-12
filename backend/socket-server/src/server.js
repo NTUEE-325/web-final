@@ -32,6 +32,7 @@ db.once("open", () => {
       console.log(arg);
     });
     socket.on("joinRoom", async ({ userId, roomId }) => {
+      console.log("joinRoom");
       const game = await Game.findOne({ id: roomId });
       if (game.players.length < 4) {
         socket.join(roomId);

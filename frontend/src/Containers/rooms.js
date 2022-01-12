@@ -39,21 +39,26 @@ export default function Rooms(props) {
     { name: "999", player: 1, capacity: 4, difficulty: "easy" },
   ]);
   const userId = useSelector((state) => state.session.userId);
-  const ws = useSelector((state) => state.game.ws);
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const { connectWebSocket, joinRoom, ws } = useGame();
   useEffect(() => {
     const fetch = async () => {
       const { data } = await instance.get("/rooms");
       setRooms(data);
-      dispatch(connectWebSocket());
     };
     fetch();
   }, []);
   useEffect(() => {
-    dispatch(initWebSocket());
-  }, [ws]);
-
+    connectWebSocket();
+  }, []);
+  useEffect(() => {
+    if (ws) {
+      console.log("listening");
+      ws.on("addRoom", (data) => {
+        console.log(data);
+      });
+    }
+  }, ws);
   return (
     <>
       <Appbar navigate={props.navigate} />
@@ -110,8 +115,8 @@ export default function Rooms(props) {
                     <Grid item xs={3}>
                       <Button
                         sx={{ float: "right" }}
-                        onClick={async () => {
-                          dispatch(joinRoom({ userId, roomId: room.name }));
+                        onClick={() => {
+                          joinRoom({ userId, roomId: room.name });
                         }}
                       >
                         Join Room

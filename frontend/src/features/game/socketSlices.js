@@ -22,6 +22,8 @@ export const gameSlice = createSlice({
   reducers: {
     connectWebSocket: (state, action) => {
       state.ws = webSocket(process.env.WEBSOCKET_URL);
+      console.log("webSocket connected");
+      console.log(state.ws);
     },
     initWebSocket: (state) => {
       state.ws.on("getMessage", (msg) => {
