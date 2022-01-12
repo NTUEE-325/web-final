@@ -55,7 +55,11 @@ export default function Rooms(props) {
     if (ws) {
       console.log("listening");
       ws.on("addRoom", (data) => {
-        console.log(data);
+        if (data.msg === "succcessful") {
+          props.navigate(`room?roomId=${data.gameId}`);
+        } else {
+          setOpen(true);
+        }
       });
     }
   }, ws);
