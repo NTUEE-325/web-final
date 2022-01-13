@@ -99,7 +99,7 @@ const ResponsiveAppBar = (props) => {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-            onClick={() => props.navigate("/login")}
+            onClick={() => props.navigate("/")}
           >
             LOGO
           </Typography>

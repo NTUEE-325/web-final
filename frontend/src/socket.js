@@ -8,5 +8,7 @@ const WEBSOCKET_URL = "localhost:5000";
 
 dotenv.config();
 
+function socketProvider() {}
+
 export const socket = io(WEBSOCKET_URL);
 export const SocketContext = React.createContext(socket);

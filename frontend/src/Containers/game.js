@@ -26,11 +26,8 @@ function Game(props) {
   } = useGame();
 
   useEffect(() => {
-    if (!ws) {
-      console.log(ws);
-      connectWebSocket();
-      console.log("hihi");
-    }
+    connectWebSocket();
+    console.log("hihi");
   }, []);
   useEffect(() => {
     if (ws) {

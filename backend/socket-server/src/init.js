@@ -1,15 +1,15 @@
 import Game from "../../models/game.js";
 import mongoose from "mongoose";
-const initGame = (option) => {
-  const { playersId, playerNum, level, gameId } = option;
-  const GameDetail = {};
-  GameDetail["id"] = gameId;
+const initGame = async (gameId) => {
+  const GameDetail = await Game.findOne({ id: gameId });
+  //GameDetail["id"] = gameId;
+  console.log(GameDetail);
+  const playerNum = 4;
   GameDetail["virus1"] = new Array(48).fill(0);
   GameDetail["virus2"] = new Array(48).fill(0);
   GameDetail["virus3"] = new Array(48).fill(0);
   GameDetail["virus4"] = new Array(48).fill(0);
   GameDetail["activeVirus"] = new Array(4).fill(false);
-  GameDetail["players"] = [];
   GameDetail["discardPlayerDeck"] = [];
   GameDetail["discardVirusDeck"] = [];
 
@@ -26,11 +26,11 @@ const initGame = (option) => {
       a = arr.pop();
       tmp.push(a);
       GameDetail["discardPlayerDeck"].push(a);
-      GameDetail["players"].push({
-        playerId: playersId[i],
+      GameDetail["players"][i] = {
+        playerId: GameDetail["players"][i].playerId,
         playerHand: tmp,
         playerJob: arr2[i],
-      });
+      };
     }
   }
 
@@ -59,9 +59,9 @@ const initGame = (option) => {
   }
   GameDetail["virusDeck"] = arr3;
   //console.log(GameDetail);
-  const newGame = new Game(GameDetail);
-  console.log(newGame);
-  return newGame;
+  GameDetail.save();
+  console.log(GameDetail);
+  return GameDetail;
 };
 const option = {
   gameId: "123",

@@ -88,11 +88,11 @@ const games = [
         playerHand: [5, 8, 9],
         playerJob: 1,
       },
-      {
-        playerId: "jack",
-        playerHand: [13, 20, 44],
-        playerJob: 5,
-      },
+      // {
+      //   playerId: "jack",
+      //   playerHand: [13, 20, 44],
+      //   playerJob: 5,
+      // },
     ],
     difficulty: "Hard",
     playerDeck: [11, 12, 14, 15, 16],
