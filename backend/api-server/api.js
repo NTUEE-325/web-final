@@ -198,7 +198,7 @@ router.get("/rooms", async (req, res) => {
 router.post("/createRoom", async (req, res) => {
   const { userId, difficulty } = req.body;
 
-  if (userId === undefined) {
+  if (userId === null) {
     return res.status(403).send("User not login");
   }
 
@@ -240,6 +240,7 @@ router.post("/createRoom", async (req, res) => {
 
   user.gameId = id;
   user.save();
+  // 還需redirect到該遊戲頁面
 });
 
 export default router;
