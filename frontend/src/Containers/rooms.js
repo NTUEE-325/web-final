@@ -4,7 +4,7 @@ import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { Joingame } from "../features/session/sessionSlices";
+import { Login, Joingame } from "../features/session/sessionSlices";
 import useGame from "../Hooks/useGame";
 import { SocketContext } from "../socket";
 import {
@@ -39,6 +39,21 @@ export default function Rooms(props) {
   // const { connectWebSocket, joinRoom, ws } = useGame();
   useEffect(() => {
     const fetch = async () => {
+      const user = await instance.get("/session");
+      if (user.data) {
+        dispatch(Login({ userId: user.data.userId }));
+        console.log(user.data);
+        try {
+          if (user.data.userId) {
+            const roomId = await instance.post("/room", {
+              userId,
+            });
+            if (roomId.data.roomId.length > 0) {
+              props.navigate(`./room?roomId=${roomId.data.roomId}`);
+            }
+          }
+        } catch (e) {}
+      }
       const { data } = await instance.get("/rooms");
       setRooms(data);
     };
@@ -48,9 +63,9 @@ export default function Rooms(props) {
     });
     fetch();
   }, []);
-  if (roomId.length > 0) {
-    props.navigate(`./room?roomId=${roomId}`);
-  }
+  // if (roomId.length > 0) {
+  //   props.navigate(`./room?roomId=${roomId}`);
+  // }
 
   return (
     <>

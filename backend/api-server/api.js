@@ -182,6 +182,16 @@ router.post("/resetpw", async (req, res) => {
 
   res.status(202).send();
 });
+router.post("/room", async (req, res) => {
+  const { userId } = req.body;
+  const user = await User.findOne({ userId });
+  console.log(user);
+  if (user) {
+    res.json({ roomId: user.gameId });
+  } else {
+    res.status(403).send();
+  }
+});
 router.get("/rooms", async (req, res) => {
   const Games = await Game.find();
 
