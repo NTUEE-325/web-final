@@ -207,7 +207,7 @@ router.get("/rooms", async (req, res) => {
 });
 router.post("/createRoom", async (req, res) => {
   const { userId, difficulty } = req.body;
-
+  console.log(userId);
   if (userId === null) {
     return res.status(403).send("User not login");
   }

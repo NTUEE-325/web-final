@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { Login, Logout } from "../features/session/sessionSlices";
 import instance from "../instance";
 import ResponsiveAppBar from "./appbar";
-
+import { Snackbar, Alert } from "@mui/material";
 const theme = createTheme({
   palette: {
     quickStart: {
@@ -35,6 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function HomePage(props) {
+  const [open, setOpen] = useState(false);
   const login = useSelector((state) => state.session.login);
   const userId = useSelector((state) => state.session.userId);
   const dispatch = useDispatch();
@@ -59,10 +60,17 @@ function HomePage(props) {
             color="quickStart"
             style={{ width: "20vw", height: "10vh", fontSize: "2.4vw" }}
             onClick={async () => {
-              await instance.post("/createRoom", {
-                userId: userId,
-                difficulty: "normal",
-              });
+              if (!login) {
+                props.navigate("./login");
+              }
+              try {
+                await instance.post("/createRoom", {
+                  userId: userId,
+                  difficulty: "normal",
+                });
+              } catch (e) {
+                setOpen(true);
+              }
             }}
           >
             QuickStart
@@ -95,6 +103,20 @@ function HomePage(props) {
       {login ? <div>{userId}</div> : <div>Not login yet</div>}
       <button onClick={() => props.navigate("/login")}>go to login page</button>
       <button onClick={() => props.navigate("/game")}>go to game</button> */}
+      <Snackbar
+        anchorOrigin={{ vertical: "button", horizontal: "left" }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Already in game
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
