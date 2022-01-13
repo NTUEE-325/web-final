@@ -75,8 +75,15 @@ db.once("open", () => {
         io.emit("addRoom", { msg: "failed", gameId: "" });
       }
     });
-    socket.on("queryGame", (gameId) => {
+    socket.on("queryGame", async (gameId) => {
       console.log("data queried");
+      console.log(gameId);
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      io.emit("gameDetail", data);
     });
     socket.on("startGame", (gameId) => {
       console.log("game has started");

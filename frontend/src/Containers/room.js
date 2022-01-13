@@ -7,7 +7,9 @@ import { useDispatch } from "react-redux";
 import { Login, Joingame, Addevent } from "../features/session/sessionSlices";
 import useGame from "../Hooks/useGame";
 import io from "socket.io-client";
+import { Animation } from "react-konva";
 import { socket, SocketContext } from "../socket";
+import Konva from "konva";
 import {
   Card,
   CardActions,
@@ -46,8 +48,9 @@ export default function Room(props) {
   const wsRef = useRef(null);
   // const { connectWebSocket, joinRoom, ws } = useGame();
   useEffect(() => {
+    let user;
     const fetch = async () => {
-      const user = await instance.get("/session");
+      user = await instance.get("/session");
       if (user.data) {
         console.log(user.data);
         dispatch(Login({ userId: user.data.userId, roomId: user.data.gameId }));
@@ -57,17 +60,21 @@ export default function Room(props) {
       }
     };
 
-    fetch();
-    wsRef.current = io(WEBSOCKET_URL);
+    fetch().then(() => {
+      wsRef.current = io(WEBSOCKET_URL);
 
-    wsRef.current.on("room", (data) => {
-      console.log(data.players);
-      setPlayers([...data.players]);
+      wsRef.current.on("room", (data) => {
+        console.log(data.players);
+        setPlayers([...data.players]);
+      });
+      wsRef.current.on("gameStarted", () => {
+        props.navigate(`./game?gameId=${roomId}`);
+      });
+      wsRef.current.emit("room", user.data.gameId);
     });
-    wsRef.current.on("gameStarted", () => {
-      props.navigate(`./game?gameId=${roomId}`);
-    });
-    wsRef.current.emit("room", roomId);
+
+    const anim = new Konva.Animation(frame);
+
     //dispatch(Addevent({ event: "room" }));
 
     return () => wsRef.current.disconnect();
@@ -81,6 +88,7 @@ export default function Room(props) {
   // if (roomId.length > 0) {
   //   props.navigate(`./room?roomId=${roomId}`);
   // }
+
   return (
     <>
       <Appbar navigate={props.navigate} />

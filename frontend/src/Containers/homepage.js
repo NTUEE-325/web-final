@@ -50,7 +50,7 @@ function HomePage(props) {
       const { data } = await instance.get("/session");
       console.log(data);
       if (data) {
-        dispatch(Login({ userId: data.userId }));
+        dispatch(Login({ userId: data.userId, roomId: data.gameId }));
       }
     };
 
