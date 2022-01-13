@@ -36,7 +36,7 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
   lineHeight: "15vh",
-  padding: "5vh",
+  padding: "3.5vh",
   marginBottom: "3vh",
 }));
 
@@ -170,7 +170,7 @@ function HomePage(props) {
             <Card>
               <CardMedia
                 component="img"
-                sx={{ maxWidth: "55vw", maxHeight: "55vh" }}
+                sx={{ maxWidth: "57.5vw", maxHeight: "57.5vh" }}
                 image="https://i.imgur.com/Q2UZka4.jpg"
                 alt="pandemic board game"
               />
