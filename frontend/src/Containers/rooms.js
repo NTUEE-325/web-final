@@ -4,7 +4,7 @@ import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { Login, Joingame } from "../features/session/sessionSlices";
+import { Login, Joingame, Addevent } from "../features/session/sessionSlices";
 import useGame from "../Hooks/useGame";
 import { SocketContext } from "../socket";
 import {
@@ -33,6 +33,7 @@ export default function Rooms(props) {
   const [rooms, setRooms] = useState([]);
   const userId = useSelector((state) => state.session.userId);
   const roomId = useSelector((state) => state.session.roomId);
+  const socketEvent = useSelector((state) => state.session.socketEvent);
   const [open, setOpen] = useState(false);
   const ws = React.useContext(SocketContext);
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export default function Rooms(props) {
     const fetch = async () => {
       const user = await instance.get("/session");
       if (user.data) {
-        dispatch(Login({ userId: user.data.userId }));
+        dispatch(Login({ userId: user.data.userId, roomId: user.data.gameId }));
         console.log(user.data);
         try {
           if (user.data.userId) {
@@ -57,10 +58,15 @@ export default function Rooms(props) {
       const { data } = await instance.get("/rooms");
       setRooms(data);
     };
-    ws.on("addRoom", (data) => {
-      console.log(data);
-      dispatch(Joingame({ roomId: data.gameId }));
-    });
+    if (!socketEvent.includes("addRoom")) {
+      ws.on("addRoom", (data) => {
+        console.log(data);
+        console.log(socketEvent);
+        dispatch(Joingame({ roomId: data.gameId }));
+        dispatch(Addevent({ event: "addRoom" }));
+      });
+    }
+
     fetch();
   }, []);
   // if (roomId.length > 0) {

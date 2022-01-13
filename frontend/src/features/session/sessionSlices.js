@@ -6,11 +6,13 @@ export const sessionSlice = createSlice({
     login: false,
     userId: null,
     roomId: "",
+    socketEvent: [],
   },
   reducers: {
     Login: (state, action) => {
       state.login = true;
       state.userId = action.payload.userId;
+      state.roomId = action.payload.roomId;
     },
     Logout: (state) => {
       state.login = false;
@@ -19,9 +21,12 @@ export const sessionSlice = createSlice({
       console.log(action.payload);
       state.roomId = action.payload.roomId;
     },
+    Addevent: (state, action) => {
+      state.socketEvent.push(action.payload.event);
+    },
   },
 });
 
-export const { Login, Logout, Joingame } = sessionSlice.actions;
+export const { Login, Logout, Joingame, Addevent } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
