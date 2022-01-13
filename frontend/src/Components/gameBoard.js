@@ -52,6 +52,36 @@ function GameBoard() {
             );
           });
         })}
+        <Line
+          points={[975, 525, 1060, 401.75]}
+          stroke={"lightgreen"}
+          strokeWidth={3}
+        ></Line>
+        <Line
+          points={[10, 401.75, 125, 235]}
+          stroke={"lightgreen"}
+          strokeWidth={3}
+        ></Line>
+        <Line
+          points={[945, 250, 1060, 216.78]}
+          stroke={"lightgreen"}
+          strokeWidth={3}
+        ></Line>
+        <Line
+          points={[10, 216.78, 110, 185]}
+          stroke={"lightgreen"}
+          strokeWidth={3}
+        ></Line>
+        <Line
+          points={[920, 390, 1060, 270.42]}
+          stroke={"lightgreen"}
+          strokeWidth={3}
+        ></Line>
+        <Line
+          points={[10, 270.42, 110, 185]}
+          stroke={"lightgreen"}
+          strokeWidth={3}
+        ></Line>
       </Layer>
       <Layer>
         {cities.map((city) => (
