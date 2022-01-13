@@ -11,7 +11,9 @@ router.get("/", (req, res) => {
 router.get("/session", (req, res) => {
   //console.log(req.session.id);
   if (req.session.userId) {
-    res.status(200).send({ userId: req.session.userId });
+    res
+      .status(200)
+      .send({ userId: req.session.userId, gameId: req.session.gameId });
   } else {
     res.status(200).send();
   }
@@ -35,6 +37,9 @@ router.post("/login", async (req, res) => {
   }
   if (!req.session.userId) {
     req.session.userId = user.userId;
+  }
+  if (!req.session.gameId) {
+    req.session.gameId = user.gameId;
   }
   console.log("Successful login");
 
@@ -182,7 +187,14 @@ router.post("/resetpw", async (req, res) => {
 
   res.status(202).send();
 });
+router.get("/room", async (req, res) => {
+  console.log("hihi");
+  const { roomId } = req.params;
+  console.log(req.query);
+  console.log(req.params);
+});
 router.post("/room", async (req, res) => {
+  console.log(req.body);
   const { userId } = req.body;
   const user = await User.findOne({ userId });
   console.log(user);
@@ -207,7 +219,7 @@ router.get("/rooms", async (req, res) => {
 });
 router.post("/createRoom", async (req, res) => {
   const { userId, difficulty } = req.body;
-  console.log(userId);
+
   if (userId === null) {
     return res.status(403).send("User not login");
   }

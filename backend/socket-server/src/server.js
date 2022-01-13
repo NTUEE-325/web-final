@@ -32,6 +32,14 @@ db.once("open", () => {
     socket.on("getMessage", (arg) => {
       console.log(arg);
     });
+    socket.on("room", async (roomId) => {
+      console.log(roomId);
+      if (roomId === null) {
+        resizeBy.status(403).send();
+      }
+      const { players, difficulty } = await Game.findOne({ id: roomId });
+      io.emit("room", { players, difficulty });
+    });
     socket.on("joinRoom", async ({ userId, roomId }) => {
       console.log("joinRoom");
       console.log(userId);
