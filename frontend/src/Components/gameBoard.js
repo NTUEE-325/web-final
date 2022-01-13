@@ -1,8 +1,20 @@
 import React from "react";
 import Konva from "konva";
-import { Layer, Rect, Stage, Group, Circle, Image } from "react-konva";
+import {
+  Layer,
+  Rect,
+  Stage,
+  Group,
+  Circle,
+  Image,
+  Text,
+  Line,
+} from "react-konva";
+import { cities } from "../constants/cities";
+import { edges } from "../constants/edgesDrawing";
 
 function GameBoard() {
+  //console.log(cities);
   let image = new window.Image();
   image.src = "https://i.imgur.com/v4mD7Mw.jpg";
   return (
@@ -17,7 +29,43 @@ function GameBoard() {
         ></Image>
       </Layer>
       <Layer>
-        <Circle
+        {edges.map((edge, i) => {
+          return edge.map((city) => {
+            console.log(
+              cities[i].x,
+              cities[i].y,
+              cities[city].x,
+              cities[city].y
+            );
+            return (
+              <Line
+                key={i + city}
+                points={[
+                  cities[i].x,
+                  cities[i].y,
+                  cities[city].x,
+                  cities[city].y,
+                ]}
+                stroke={"lightgreen"}
+                strokeWidth={3}
+              ></Line>
+            );
+          });
+        })}
+      </Layer>
+      <Layer>
+        {cities.map((city) => (
+          <Circle
+            key={city.city}
+            id={city.city}
+            x={city.x}
+            y={city.y}
+            radius={8}
+            fill={city.color}
+            onClick={() => alert(city.city)}
+          ></Circle>
+        ))}
+        {/* <Circle
           x={"110"}
           y={"185"}
           radius={8}
@@ -214,12 +262,145 @@ function GameBoard() {
           onClick={() => alert("hello")}
         />
         <Circle
+          x={"710"}
+          y={"190"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"670"}
+          y={"245"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
           x={"655"}
           y={"300"}
           radius={8}
           fill="black"
           onClick={() => alert("hello")}
         />
+        <Circle
+          x={"715"}
+          y={"270"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"750"}
+          y={"235"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"750"}
+          y={"315"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"800"}
+          y={"280"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"790"}
+          y={"355"}
+          radius={8}
+          fill="black"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"835"}
+          y={"320"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"795"}
+          y={"420"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"855"}
+          y={"200"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"865"}
+          y={"255"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"875"}
+          y={"295"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"920"}
+          y={"390"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"855"}
+          y={"400"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"900"}
+          y={"220"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"945"}
+          y={"250"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"970"}
+          y={"290"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"925"}
+          y={"305"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        />
+        <Circle
+          x={"970"}
+          y={"525"}
+          radius={8}
+          fill="red"
+          onClick={() => alert("hello")}
+        /> */}
       </Layer>
     </Stage>
   );
