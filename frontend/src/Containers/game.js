@@ -28,7 +28,6 @@ function Game(props) {
   useEffect(() => {
     connectWebSocket();
     console.log("hihi");
-    return () => ws.disconnect();
   }, []);
   useEffect(() => {
     if (ws) {

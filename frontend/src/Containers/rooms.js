@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Appbar from "./appbar";
 import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { Login, Joingame, Addevent } from "../features/session/sessionSlices";
 import useGame from "../Hooks/useGame";
 import { SocketContext } from "../socket";
+import io from "socket.io-client";
+
 import {
   Card,
   CardActions,
@@ -29,13 +31,15 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
+const WEBSOCKET_URL = "localhost:5000";
 export default function Rooms(props) {
   const [rooms, setRooms] = useState([]);
   const userId = useSelector((state) => state.session.userId);
   const roomId = useSelector((state) => state.session.roomId);
   const socketEvent = useSelector((state) => state.session.socketEvent);
   const [open, setOpen] = useState(false);
-  const ws = React.useContext(SocketContext);
+  const wsRef = useRef(null);
+
   const dispatch = useDispatch();
   // const { connectWebSocket, joinRoom, ws } = useGame();
   useEffect(() => {
@@ -58,16 +62,17 @@ export default function Rooms(props) {
       const { data } = await instance.get("/rooms");
       setRooms(data);
     };
-    if (!socketEvent.includes("addRoom")) {
-      ws.on("addRoom", (data) => {
-        console.log(data);
-        console.log(socketEvent);
-        dispatch(Joingame({ roomId: data.gameId }));
-        dispatch(Addevent({ event: "addRoom" }));
-      });
-    }
+    wsRef.current = io(WEBSOCKET_URL);
+    wsRef.current.on("addRoom", (data) => {
+      console.log(data);
+      //console.log(socketEvent);
+      dispatch(Joingame({ roomId: data.gameId }));
+      props.navigate(`./room?roomId=${roomId}`);
+      //dispatch(Addevent({ event: "addRoom" }));
+    });
 
     fetch();
+    return () => wsRef.current.disconnect();
   }, []);
   // if (roomId.length > 0) {
   //   props.navigate(`./room?roomId=${roomId}`);
@@ -130,7 +135,10 @@ export default function Rooms(props) {
                       <Button
                         sx={{ float: "right" }}
                         onClick={() => {
-                          ws.emit("joinRoom", { userId, roomId: room.name });
+                          wsRef.current.emit("joinRoom", {
+                            userId,
+                            roomId: room.name,
+                          });
                         }}
                       >
                         Join Room

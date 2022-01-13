@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Appbar from "./appbar";
 import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
@@ -43,31 +43,34 @@ export default function Room(props) {
 
   const dispatch = useDispatch();
   console.log(players);
-
+  const wsRef = useRef(null);
   // const { connectWebSocket, joinRoom, ws } = useGame();
   useEffect(() => {
     const fetch = async () => {
       const user = await instance.get("/session");
       if (user.data) {
+        console.log(user.data);
         dispatch(Login({ userId: user.data.userId, roomId: user.data.gameId }));
         console.log(user.data);
       } else {
         props.navigate("./login");
       }
     };
-    console.log(socketEvent);
 
     fetch();
-    const ws = io(WEBSOCKET_URL);
+    wsRef.current = io(WEBSOCKET_URL);
 
-    ws.on("room", (data) => {
+    wsRef.current.on("room", (data) => {
       console.log(data.players);
       setPlayers([...data.players]);
     });
-    ws.emit("room", roomId);
+    wsRef.current.on("gameStarted", () => {
+      props.navigate(`./game?gameId=${roomId}`);
+    });
+    wsRef.current.emit("room", roomId);
     //dispatch(Addevent({ event: "room" }));
 
-    return () => ws.disconnect();
+    return () => wsRef.current.disconnect();
   }, []);
   //   useEffect(() => {
   //     if (roomId.length > 0) {
@@ -138,23 +141,27 @@ export default function Room(props) {
                 </CardContent>
               </Card>
             ))}
+            <Button
+              variant="contained"
+              // color="quickStart"
+              style={{
+                width: "20vw",
+                height: "15vh",
+                fontSize: "2.5vw",
+              }}
+              onClick={async () => {
+                if (!login) {
+                  props.navigate("./login");
+                }
+
+                wsRef.current.emit("startGame", roomId);
+              }}
+            >
+              Start
+            </Button>
           </Stack>
         </Grid>
       </Grid>
-      <Snackbar
-        anchorOrigin={{ vertical: "button", horizontal: "left" }}
-        open={open}
-        autoHideDuration={3000}
-        onClose={() => setOpen(false)}
-      >
-        <Alert
-          onClose={() => setOpen(false)}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          Join room failed
-        </Alert>
-      </Snackbar>
     </>
   );
 }
