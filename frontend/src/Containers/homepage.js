@@ -57,7 +57,7 @@ function HomePage(props) {
           <Button
             variant="contained"
             color="quickStart"
-            style={{ width: "20vw", height: "10vh", fontSize: "2.4vw" }}
+            style={{ width: "20vw", height: "15vh", fontSize: "2.5vw" }}
             onClick={async () => {
               await instance.post("/createRoom", {
                 userId: userId,
@@ -69,6 +69,7 @@ function HomePage(props) {
           </Button>
         </ThemeProvider>
       </Item>
+      <Grid container spacing={1}></Grid>
 
       {/* <button
         onClick={async () => {
