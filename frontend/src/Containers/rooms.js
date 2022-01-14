@@ -93,7 +93,7 @@ export default function Rooms(props) {
         hello
       </Box>
       <Box sx={{ width: 300, height: 400 }}>hello2</Box> */}
-      <Grid container spacing={2} sx={{ height: "100vh" }}>
+      <Grid container spacing={2} sx={{ height: "80vh" }}>
         <Grid item xs={3} mt={7} ml={3}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">難度</InputLabel>
