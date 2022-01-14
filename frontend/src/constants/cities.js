@@ -200,12 +200,14 @@ export const cities = [
     x: "710",
     y: "190",
     color: "black",
+    name: "TEH",
   },
   {
     city: "29",
     x: "670",
     y: "245",
     color: "black",
+    name: "BGD",
   },
   {
     city: "30",
@@ -219,6 +221,7 @@ export const cities = [
     x: "715",
     y: "270",
     color: "black",
+    name: "KHI",
   },
   {
     city: "32",
