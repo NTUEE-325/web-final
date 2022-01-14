@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import instance from "../instance";
 import { Login } from "../features/session/sessionSlices";
+import MoveSelector from "../Components/moveSelector";
 import {
   List,
   ListSubheader,
@@ -13,6 +14,9 @@ import {
   Rating,
   ListItemText,
   Grid,
+  Card,
+  Button,
+  Typography,
 } from "@mui/material";
 import io from "socket.io-client";
 import GameBoard from "../Components/gameBoard";
@@ -113,8 +117,136 @@ function Game(props) {
             leftMove={leftMove}
           ></GameBoard>
         </Grid>
-        <Grid item xs={1}>
-          456
+        <Grid item xs={3.5}>
+          <Grid container>
+            <Grid item xs={6.5}>
+              <MoveSelector></MoveSelector>
+              {/* 456 */}
+              {/* <Grid innerContainer>
+            <Grid item xs={8}>
+              <MoveSelector></MoveSelector>
+            </Grid>
+            <Grid item xs={4}>
+              <Card>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Player 1
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Job: Medic
+                </Typography>
+              </Card>
+            </Grid> */}
+              {/* </Grid> */}
+            </Grid>
+            <Grid item xs={4.5} mt={"20px"} mr={"10px"}>
+              <Card>
+                <Typography
+                  ml={"10px"}
+                  sx={{ fontSize: 26 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Player 1
+                </Typography>
+                <Typography
+                  ml={"10px"}
+                  sx={{ fontSize: 16 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Job: Medic
+                </Typography>
+                <Button ml={"10px"}>ShowCard</Button>
+              </Card>
+              <br />
+              <Card>
+                <Typography
+                  ml={"10px"}
+                  sx={{ fontSize: 26 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Player 2
+                </Typography>
+                <Typography
+                  ml={"10px"}
+                  sx={{ fontSize: 16 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Job: Scientist
+                </Typography>
+                <Button ml={"10px"}>ShowCard</Button>
+              </Card>
+              <br />
+              <Card>
+                <Typography
+                  ml={"10px"}
+                  sx={{ fontSize: 26 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Player 3
+                </Typography>
+                <Typography
+                  ml={"10px"}
+                  sx={{ fontSize: 16 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Job: Builder
+                </Typography>
+                <Button ml={"10px"}>ShowCard</Button>
+              </Card>
+            </Grid>
+          </Grid>
+          <br />
+          <Grid item xs={11}>
+            <Card>
+              <Typography
+                ml={"10px"}
+                sx={{ fontSize: 26 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Me
+              </Typography>
+              <Typography
+                ml={"10px"}
+                sx={{ fontSize: 16 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Job: Builder
+              </Typography>
+            </Card>
+          </Grid>
+          {/* <Card>
+            <Typography
+              ml={"10px"}
+              sx={{ fontSize: 26 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Me
+            </Typography>
+            <Typography
+              ml={"10px"}
+              sx={{ fontSize: 16 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Job: Builder
+            </Typography>
+          </Card> */}
         </Grid>
       </Grid>
 
