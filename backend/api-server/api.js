@@ -264,5 +264,61 @@ router.post("/createRoom", async (req, res) => {
   user.save();
   // 還需redirect到該遊戲頁面
 });
+router.post("/addFriend", async (req, res) => {
+  const { me, buddy } = req.body;
+  if (me === null) {
+    return res.status(403).send("user not login");
+  }
+  if (buddy === null) {
+    return res.status(404).send("friend not found");
+  }
+  if (me === buddy) {
+    return res.status(403).send("can't add yourself as friend");
+  }
+  let myself = User.find({ userId: me });
+  if (myself.friend.find((element) => element === buddy) === undefined) {
+    myself.friend.push(buddy);
+    const friends = myself.friend.forEach(async (bestie) => {
+      const other = await User.find({ userId: bestie });
+      return {
+        name: other.userId,
+        status: other.status,
+      };
+    });
+    return res.status(200).send(friends);
+  } else {
+    return res.status(403).send("user already in friend");
+  }
+});
+router.post("/getFriend", async (req, res) => {
+  //console.log(req);
+  //console.log(req.body.userId);
+  const me = req.body.userId;
+  //console.log(me);
+  if (me === null) {
+    return res.status(403).send("User not login");
+  } else {
+    const myself = await User.findOne({ userId: me });
+    //console.log(myself);
+    if (myself === null) return res.status(404).send("User not found");
+    else {
+      console.log(myself.friend);
+      if (myself.friend) {
+        const users = await User.find({});
+        const friends = users.filter((user) => {
+          return myself.friend.includes(user.userId);
+        });
+        console.log(friends);
+        const buddies = friends.map((friend) => {
+          return {
+            name: friend.nameId,
+            status: friend.status,
+          };
+        });
+        return res.status(200).send(buddies);
+      } else return res.status(404).send("User not login");
+    }
+  }
+});
 
 export default router;
