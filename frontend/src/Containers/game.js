@@ -35,7 +35,7 @@ function Game(props) {
   const dispatch = useDispatch();
   const {
     who,
-    job,
+    me,
     leftMove,
     virus,
     players,
@@ -43,7 +43,7 @@ function Game(props) {
     setOthers,
     setPlayers,
     setWho,
-    setJob,
+    setMe,
     setLeftMove,
     setPlayerDeck,
     setDiscardPlayerDeck,
@@ -69,6 +69,9 @@ function Game(props) {
       wsRef.current.on("gameDetail", (data) => {
         setOthers(
           data.players.filter((player) => player.playerId !== user.data.userId)
+        );
+        setMe(
+          data.players.filter((player) => player.playerId === user.data.userId)
         );
         setPlayers(data.players);
         setVirus(data.virus);
@@ -236,7 +239,7 @@ function Game(props) {
                 color="text.secondary"
                 gutterBottom
               >
-                Job: Builder
+                Job: {me[0] ? jobs[me[0].playerJob] : null}
               </Typography>
             </Card>
           </Grid>
