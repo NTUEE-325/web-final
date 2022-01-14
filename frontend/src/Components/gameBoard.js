@@ -21,9 +21,9 @@ function GameBoard({ virus, players }) {
   image.src = "https://i.imgur.com/v4mD7Mw.jpg";
   return (
     <Stage width={window.innerWidth} height={620}>
-      <Layer>
+      {/* <Layer>
         {/* <Button></Button> */}
-        {players.length > 0 ? (
+      {/* {players.length > 0 ? (
           <>
             <Rect x={1070} y={550} width={110} height={70} fill="red"></Rect>
             <Text x={1070} y={550} text={players[0].playerId}></Text>
@@ -34,8 +34,8 @@ function GameBoard({ virus, players }) {
             <Rect x={1300} y={550} width={110} height={70} fill="red"></Rect>
             <Text x={1300} y={550} text={players[3].playerId}></Text>
           </>
-        ) : null}
-      </Layer>
+        ) : null} 
+      </Layer> */}
       <Layer>
         <Image
           x={"10"}
