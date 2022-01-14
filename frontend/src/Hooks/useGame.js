@@ -9,33 +9,27 @@ const useGame = () => {
   const [virusDeck, setVirusDeck] = useState([]);
   const [discardvirusDeck, setDiscardVirusDeck] = useState([]);
   const [activeVirus, setActiveVirus] = useState([]);
-  const [virus1, setVirus1] = useState(Array(48).fill(0));
-  const [virus2, setVirus2] = useState(Array(48).fill(0));
-  const [virus3, setVirus3] = useState(Array(48).fill(0));
-  const [virus4, setVirus4] = useState(Array(48).fill(0));
+  const [virus, setVirus] = useState(Array(48).fill(0));
+  const [players, setPlayers] = useState([]);
   const [who, setWho] = useState("");
   const [leftMove, setLeftMove] = useState(4);
   const [job, setJob] = useState(0);
   return {
+    players,
+    setPlayers,
     setPlayerDeck,
     setDiscardPlayerDeck,
     setVirusDeck,
     setDiscardVirusDeck,
     setActiveVirus,
-    setVirus1,
-    setVirus2,
-    setVirus3,
-    setVirus4,
+    setVirus,
     who,
     leftMove,
     job,
     setJob,
     setLeftMove,
     setWho,
-    virus1,
-    virus2,
-    virus3,
-    virus4,
+    virus,
   };
 };
 export default useGame;

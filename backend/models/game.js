@@ -16,10 +16,11 @@ const GameSchema = new Schema({
   virusDeck: [Number],
   discardVirusDeck: [Number],
   activeVirus: [Number],
-  virus1: [Number],
-  virus2: [Number],
-  virus3: [Number],
-  virus4: [Number],
+  // virus1: [Number],
+  // virus2: [Number],
+  // virus3: [Number],
+  // virus4: [Number],
+  virus: [Number],
 });
 const Game = mongoose.model("Game", GameSchema);
 export default Game;

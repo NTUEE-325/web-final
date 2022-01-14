@@ -73,8 +73,6 @@ export default function Room(props) {
       wsRef.current.emit("room", user.data.gameId);
     });
 
-    const anim = new Konva.Animation(frame);
-
     //dispatch(Addevent({ event: "room" }));
 
     return () => wsRef.current.disconnect();

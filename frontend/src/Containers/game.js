@@ -12,8 +12,11 @@ import {
   ListItemButton,
   Rating,
   ListItemText,
+  Grid,
 } from "@mui/material";
 import io from "socket.io-client";
+import GameBoard from "../Components/gameBoard";
+
 const WEBSOCKET_URL = "http://localhost:5000";
 
 function Game(props) {
@@ -24,10 +27,9 @@ function Game(props) {
     who,
     job,
     leftMove,
-    virus1,
-    virus2,
-    virus3,
-    virus4,
+    virus,
+    players,
+    setPlayers,
     setWho,
     setJob,
     setLeftMove,
@@ -35,10 +37,7 @@ function Game(props) {
     setDiscardPlayerDeck,
     setVirusDeck,
     setDiscardVirusDeck,
-    setVirus1,
-    setVirus2,
-    setVirus3,
-    setVirus4,
+    setVirus,
   } = useGame();
   useEffect(() => {
     let user;
@@ -56,15 +55,13 @@ function Game(props) {
       // });
       wsRef.current.on("gameDetail", (data) => {
         console.log(data);
+        setPlayers(data.players);
+        setVirus(data.virus);
         setWho(data.players[data.who].playerId);
         setPlayerDeck(data.playerDeck);
         setDiscardPlayerDeck(data.discardplayerDeck);
         setVirusDeck(data.virusDeck);
         setDiscardVirusDeck(data.discardvirusDeck);
-        setVirus1(data.virus1);
-        setVirus2(data.virus2);
-        setVirus3(data.virus3);
-        setVirus4(data.virus4);
       });
       wsRef.current.on("drawPlayerDeck", (data) => {
         setPlayerDeck(data.playerDeck);
@@ -75,10 +72,7 @@ function Game(props) {
         setDiscardVirusDeck(data.discardvirusDeck);
       });
       wsRef.current.on("setVirus", (data) => {
-        setVirus1(data.virus1);
-        setVirus2(data.virus2);
-        setVirus3(data.virus3);
-        setVirus4(data.virus4);
+        setVirus(data.virus);
       });
       wsRef.current.on("setWho", (data) => {
         setWho(data.who);
@@ -110,9 +104,21 @@ function Game(props) {
       >
         get game data
       </button> */}
-      <p>leftMove:{leftMove}</p>
-      <p>who:{who}</p>
-      <List
+      <Grid container>
+        <Grid item xs={8.5}>
+          <GameBoard
+            players={players}
+            virus={virus}
+            who={who}
+            leftMove={leftMove}
+          ></GameBoard>
+        </Grid>
+        <Grid item xs={1}>
+          456
+        </Grid>
+      </Grid>
+
+      {/* <List
         sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         component="nav"
         aria-labelledby="nested-list-subheader"
@@ -134,7 +140,7 @@ function Game(props) {
             </ListItemButton>
           );
         })}
-      </List>
+      </List> */}
     </div>
   );
 }

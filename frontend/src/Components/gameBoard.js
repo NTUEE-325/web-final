@@ -9,16 +9,33 @@ import {
   Image,
   Text,
   Line,
+  Star,
 } from "react-konva";
+import { Button } from "@mui/material";
 import { cities } from "../constants/cities";
 import { edges } from "../constants/edgesDrawing";
 
-function GameBoard() {
+function GameBoard({ virus, players }) {
   //console.log(cities);
   let image = new window.Image();
   image.src = "https://i.imgur.com/v4mD7Mw.jpg";
   return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
+    <Stage width={window.innerWidth} height={620}>
+      <Layer>
+        {/* <Button></Button> */}
+        {players.length > 0 ? (
+          <>
+            <Rect x={1070} y={550} width={110} height={70} fill="red"></Rect>
+            <Text x={1070} y={550} text={players[0].playerId}></Text>
+            <Rect x={1415} y={550} width={110} height={70} fill="red"></Rect>
+            <Text x={1415} y={550} text={players[1].playerId}></Text>
+            <Rect x={1185} y={550} width={110} height={70} fill="red"></Rect>
+            <Text x={1185} y={550} text={players[2].playerId}></Text>
+            <Rect x={1300} y={550} width={110} height={70} fill="red"></Rect>
+            <Text x={1300} y={550} text={players[3].playerId}></Text>
+          </>
+        ) : null}
+      </Layer>
       <Layer>
         <Image
           x={"10"}
@@ -84,16 +101,56 @@ function GameBoard() {
         ></Line>
       </Layer>
       <Layer>
-        {cities.map((city) => (
-          <Circle
-            key={city.city}
-            id={city.city}
-            x={city.x}
-            y={city.y}
-            radius={8}
-            fill={city.color}
-            onClick={() => alert(city.city)}
-          ></Circle>
+        {cities.map((city, i) => (
+          <>
+            <Circle
+              key={city.city}
+              id={city.city}
+              x={city.x}
+              y={city.y}
+              radius={8}
+              fill={city.color}
+              onClick={() => alert(city.city)}
+            ></Circle>
+            <Star
+              key={city.city}
+              id={city.city}
+              x={city.x}
+              y={parseInt(city.y) + 15}
+              innerRadius={3}
+              outerRadius={6}
+              fill={virus[i] > 1 ? city.color : null}
+              stroke={city.color}
+              strokeWidth={1}
+              onClick={() => alert(city.city)}
+            ></Star>
+            <Star
+              key={city.city}
+              id={city.city}
+              x={parseInt(city.x) - 10}
+              y={parseInt(city.y) + 15}
+              innerRadius={3}
+              outerRadius={6}
+              fill={virus[i] > 0 ? city.color : null}
+              stroke={city.color}
+              strokeWidth={1}
+              onClick={() => alert(city.city)}
+            ></Star>
+            <Star
+              key={city.city}
+              id={city.city}
+              x={parseInt(city.x) + 10}
+              y={parseInt(city.y) + 15}
+              innerRadius={3}
+              outerRadius={6}
+              stroke={city.color}
+              strokeWidth={1}
+              fill={virus[i] > 2 ? city.color : null}
+              stroke={city.color}
+              strokeWidth={1}
+              onClick={() => alert(city.city)}
+            ></Star>
+          </>
         ))}
         {/* <Circle
           x={"110"}

@@ -36,7 +36,7 @@ db.once("open", () => {
       console.log(roomId);
       socket.join(roomId);
       const game = await Game.findOne({ id: roomId });
-
+      console.log("Hello");
       if (!game) {
         return;
       }

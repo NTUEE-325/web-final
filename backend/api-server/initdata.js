@@ -70,10 +70,7 @@ const games = [
     virusDeck: [1, 2, 3, 4],
     discardVirusDeck: [5, 6, 7],
     activeVirus: [1, 2, 3, 4],
-    virus1: [1, 1, 2, 3, 6],
-    virus2: [2, 2, 10],
-    virus3: [10, 11, 11, 11],
-    virus4: [9, 9, 7, 7, 7],
+    virus: [],
   },
   {
     id: "789",
@@ -100,10 +97,7 @@ const games = [
     virusDeck: [1, 2, 3, 4],
     discardVirusDeck: [5, 6, 7],
     activeVirus: [1, 2, 3, 4],
-    virus1: [1, 1, 2, 3, 6],
-    virus2: [2, 2, 10],
-    virus3: [10, 11, 11, 11],
-    virus4: [9, 9, 7, 7, 7],
+    virus: [],
   },
 ];
 // datas.forEach(async (data) => {
