@@ -15,7 +15,7 @@ const useGame = () => {
   const [leftMove, setLeftMove] = useState(4);
   const [job, setJob] = useState(0);
   const [others, setOthers] = useState([]);
-  const [me, setMe] = useState(null);
+  const [me, setMe] = useState("");
   return {
     players,
     setPlayers,

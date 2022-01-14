@@ -17,7 +17,7 @@ import Divider from "@mui/material/Divider";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 
-export default function MoveSelector() {
+export default function MoveSelector({ city, pos }) {
   return (
     <Box
       sx={{

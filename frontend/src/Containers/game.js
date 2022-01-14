@@ -28,10 +28,10 @@ const WEBSOCKET_URL = "http://localhost:5000";
 
 // console.log(job);
 function Game(props) {
-  console.log(jobs);
   const wsRef = useRef(null);
   const roomId = useSelector((state) => state.session.roomId);
   const userId = useSelector((state) => state.session.userId);
+  const [city, setCity] = useState(0);
   const dispatch = useDispatch();
   const {
     who,
@@ -105,6 +105,7 @@ function Game(props) {
     console.log(others);
     return () => wsRef.current.disconnect();
   }, []);
+  console.log(me);
   return (
     <div>
       <Appbar navigate={props.navigate} />
@@ -129,6 +130,7 @@ function Game(props) {
             virus={virus}
             who={who}
             leftMove={leftMove}
+            city={city}
           ></GameBoard>
         </Grid>
         <Grid item xs={3.5}>
@@ -239,7 +241,7 @@ function Game(props) {
                 color="text.secondary"
                 gutterBottom
               >
-                Job: {me[0] ? jobs[me[0].playerJob] : null}
+                Job: {me.length > 0 ? jobs[me[0].playerJob] : null}
               </Typography>
             </Card>
           </Grid>
