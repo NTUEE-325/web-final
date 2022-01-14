@@ -52,9 +52,9 @@ export default function Room(props) {
     const fetch = async () => {
       user = await instance.get("/session");
       if (user.data) {
-        console.log(user.data);
+        // console.log(user.data);
         dispatch(Login({ userId: user.data.userId, roomId: user.data.gameId }));
-        console.log(user.data);
+        // console.log(user.data);
       } else {
         props.navigate("./login");
       }

@@ -40,6 +40,7 @@ function Game(props) {
     virus,
     players,
     others,
+    pos,
     setOthers,
     setPlayers,
     setWho,
@@ -105,7 +106,7 @@ function Game(props) {
     console.log(others);
     return () => wsRef.current.disconnect();
   }, []);
-  console.log(me);
+  // console.log(pos[who]);
   return (
     <div>
       <Appbar navigate={props.navigate} />
@@ -130,13 +131,15 @@ function Game(props) {
             virus={virus}
             who={who}
             leftMove={leftMove}
-            city={city}
           ></GameBoard>
         </Grid>
         <Grid item xs={3.5}>
           <Grid container>
             <Grid item xs={6.5}>
-              <MoveSelector></MoveSelector>
+              <MoveSelector
+                city={city}
+                pos={pos[who] ? pos[who] : 2}
+              ></MoveSelector>
               {/* 456 */}
               {/* <Grid innerContainer>
             <Grid item xs={8}>

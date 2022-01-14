@@ -16,8 +16,11 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
+import { edges } from "../constants/edges";
 
 export default function MoveSelector({ city, pos }) {
+  // console.log(pos);
+  // console.log("city", city);
   return (
     <Box
       sx={{
@@ -29,7 +32,7 @@ export default function MoveSelector({ city, pos }) {
     >
       <List>
         <ListItem disablePadding>
-          <ListItemButton disabled={true}>
+          <ListItemButton disabled={!edges[pos].includes(city)}>
             <ListItemIcon>
               <CommuteIcon />
             </ListItemIcon>

@@ -16,6 +16,7 @@ const useGame = () => {
   const [job, setJob] = useState(0);
   const [others, setOthers] = useState([]);
   const [me, setMe] = useState("");
+  const [pos, setPos] = useState([2, 2, 2, 2]);
   return {
     players,
     setPlayers,
@@ -36,6 +37,8 @@ const useGame = () => {
     virus,
     me,
     setMe,
+    pos,
+    setPos,
   };
 };
 export default useGame;
