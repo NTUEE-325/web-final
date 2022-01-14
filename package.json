@@ -5,7 +5,7 @@
   "repository": "https://github.com/NTUEE-325/web-final.git",
   "license": "MIT",
   "scripts": {
-    "start": "cd frontend && yarn start",
+    "start": "docker-compose up -d",
     "socket-server": "cd backend && yarn socket-server",
     "api-server": "cd backend && yarn api-server",
     "initialize": "node ./backend/api-server/initdata.js",
