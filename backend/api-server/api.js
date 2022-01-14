@@ -186,9 +186,9 @@ router.post("/resetpw", async (req, res) => {
   }
   console.log(newUser.password);
 
-  /*await AppendingUser.findOneAndDelete({
+  await AppendingUser.findOneAndDelete({
     secretToken: secretToken.split("=")[1],
-  });*/
+  });
 
   res.status(202).send();
 });
@@ -343,6 +343,17 @@ router.post("/getFriend", async (req, res) => {
       } else return res.status(404).send("User not login");
     }
   }
+});
+router.post("/deleteFriend", async (req, res) => {
+  const me = req.body.userId;
+  const friendtoDelete = req.body.name;
+  console.log(me);
+  console.log(friendtoDelete);
+  let myself = await User.findOne({ userId: me });
+  console.log(myself);
+  myself.friend = myself.friend.filter((buddy) => buddy !== friendtoDelete);
+  myself.save();
+  return res.status(200).send();
 });
 
 export default router;

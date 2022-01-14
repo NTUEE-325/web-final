@@ -68,6 +68,16 @@ export default function Friends(props) {
     setNewFriend("");
   };
 
+  const handleDeleteFriend = async (name) => {
+    await instance.post("/deleteFriend", {
+      userId,
+      name,
+    });
+    const buddy = await instance.post("/getFriend", { userId });
+    console.log(buddy.data);
+    setFriends(buddy.data);
+  };
+
   useEffect(() => {
     const fetch = async () => {
       const user = await instance.get("/session");
@@ -149,7 +159,12 @@ export default function Friends(props) {
                       <Item>{friend.status}</Item>
                     </Grid>
                     <Grid item xs={4}>
-                      <Button sx={{ float: "right" }}>Delete friend</Button>
+                      <Button
+                        sx={{ float: "right" }}
+                        onClick={() => handleDeleteFriend(friend.name)}
+                      >
+                        Delete friend
+                      </Button>
                     </Grid>
                   </Grid>
                 </CardContent>
