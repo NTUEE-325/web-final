@@ -76,7 +76,7 @@ function Game(props) {
         );
         setPlayers(data.players);
         setVirus(data.virus);
-        setWho(data.players[data.who].playerId);
+        setWho(data.who);
         setPlayerDeck(data.playerDeck);
         setDiscardPlayerDeck(data.discardplayerDeck);
         setVirusDeck(data.virusDeck);
@@ -103,10 +103,11 @@ function Game(props) {
     });
     // console.log(others);
     //dispatch(Addevent({ event: "room" }));
-    console.log(others);
+    // console.log(others);
     return () => wsRef.current.disconnect();
   }, []);
-  // console.log(pos[who]);
+  // console.log(players);
+  // console.log(who);
   return (
     <div>
       <Appbar navigate={props.navigate} />
@@ -131,6 +132,7 @@ function Game(props) {
             virus={virus}
             who={who}
             leftMove={leftMove}
+            setCity={setCity}
           ></GameBoard>
         </Grid>
         <Grid item xs={3.5}>
@@ -139,6 +141,7 @@ function Game(props) {
               <MoveSelector
                 city={city}
                 pos={pos[who] ? pos[who] : 2}
+                hand={players[who] ? players[who].playerHand : []}
               ></MoveSelector>
               {/* 456 */}
               {/* <Grid innerContainer>

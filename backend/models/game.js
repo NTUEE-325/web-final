@@ -5,6 +5,7 @@ const GameSchema = new Schema({
   players: [
     {
       playerId: String,
+      pos: Number,
       playerHand: [Number],
       playerJob: Number,
     },

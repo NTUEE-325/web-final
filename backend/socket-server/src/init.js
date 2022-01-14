@@ -34,6 +34,7 @@ const initGame = async (gameId) => {
         playerId: GameDetail["players"][i].playerId,
         playerHand: tmp,
         playerJob: arr2[i],
+        pos: 2,
       };
     }
   }

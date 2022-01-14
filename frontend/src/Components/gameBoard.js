@@ -15,7 +15,7 @@ import { Button } from "@mui/material";
 import { cities } from "../constants/cities";
 import { edges } from "../constants/edgesDrawing";
 
-function GameBoard({ virus, players }) {
+function GameBoard({ virus, players, setCity }) {
   //console.log(cities);
   let image = new window.Image();
   image.src = "https://i.imgur.com/v4mD7Mw.jpg";
@@ -110,7 +110,10 @@ function GameBoard({ virus, players }) {
               y={city.y}
               radius={8}
               fill={city.color}
-              onClick={() => alert(city.city)}
+              onClick={() => {
+                alert(i);
+                setCity(i);
+              }}
             ></Circle>
             <Star
               key={city.city + "one"}

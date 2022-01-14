@@ -17,15 +17,18 @@ import Divider from "@mui/material/Divider";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import { edges } from "../constants/edges";
+import { cities } from "../constants/cities";
 
-export default function MoveSelector({ city, pos }) {
+export default function MoveSelector({ city, pos, hand }) {
   // console.log(pos);
   // console.log("city", city);
+  // console.log(hand);
+  // console.log(hand);
   return (
     <Box
       sx={{
         width: "100%",
-        maxWidth: 220,
+        maxWidth: 250,
         bgcolor: "background.paper",
         mt: "10px",
       }}
@@ -36,23 +39,23 @@ export default function MoveSelector({ city, pos }) {
             <ListItemIcon>
               <CommuteIcon />
             </ListItemIcon>
-            <ListItemText primary="Drive/Ferry" />
+            <ListItemText primary={"Drive/Ferry：" + cities[city].name} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disabled={!hand.includes(city)}>
             <ListItemIcon>
               <FlightLandIcon />
             </ListItemIcon>
-            <ListItemText primary="Direct Flight" />
+            <ListItemText primary={"Direct Flight：" + cities[city].name} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton>
-            <ListItemIcon>
+            <ListItemIcon diabled={!hand.includes(city)}>
               <FlightTakeoffIcon />
             </ListItemIcon>
-            <ListItemText primary="Charter Flight" />
+            <ListItemText primary={"Charter Flight：" + cities[city].name} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -60,7 +63,7 @@ export default function MoveSelector({ city, pos }) {
             <ListItemIcon>
               <CompareArrowsIcon />
             </ListItemIcon>
-            <ListItemText primary="Shuttle Flight" />
+            <ListItemText primary={"Shuttle Flight：" + cities[city].name} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
