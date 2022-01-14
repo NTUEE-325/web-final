@@ -59,6 +59,7 @@ function Game(props) {
       // });
       wsRef.current.on("gameDetail", (data) => {
         console.log(data);
+
         setPlayers(data.players);
         setVirus(data.virus);
         setWho(data.players[data.who].playerId);
