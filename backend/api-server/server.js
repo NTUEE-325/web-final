@@ -12,8 +12,8 @@ dotenv.config();
 const app = express();
 
 const REDIS_PORT = 6379;
-const redisClient = new redis();
-redisClient.on("error", () => console.log("error"));
+const redisClient = new redis({ host: "redis" });
+redisClient.on("error", (e) => console.log(e));
 const secret = uuid_v4();
 const RedisStore = connectRedis(session);
 const sessionOption = {
