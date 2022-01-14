@@ -56,7 +56,7 @@ function GameBoard({ virus, players }) {
             // );
             return (
               <Line
-                key={i + city}
+                key={i + "_" + city}
                 points={[
                   cities[i].x,
                   cities[i].y,
@@ -113,8 +113,8 @@ function GameBoard({ virus, players }) {
               onClick={() => alert(city.city)}
             ></Circle>
             <Star
-              key={city.city}
-              id={city.city}
+              key={city.city + "one"}
+              id={city.city + ""}
               x={city.x}
               y={parseInt(city.y) + 15}
               innerRadius={3}
@@ -125,8 +125,8 @@ function GameBoard({ virus, players }) {
               onClick={() => alert(city.city)}
             ></Star>
             <Star
-              key={city.city}
-              id={city.city}
+              key={city.city + "two"}
+              id={city.city + ""}
               x={parseInt(city.x) - 10}
               y={parseInt(city.y) + 15}
               innerRadius={3}
@@ -137,8 +137,8 @@ function GameBoard({ virus, players }) {
               onClick={() => alert(city.city)}
             ></Star>
             <Star
-              key={city.city}
-              id={city.city}
+              key={city.city + "three"}
+              id={city.city + ""}
               x={parseInt(city.x) + 10}
               y={parseInt(city.y) + 15}
               innerRadius={3}

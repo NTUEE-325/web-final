@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import instance from "../instance";
 import { Login } from "../features/session/sessionSlices";
 import MoveSelector from "../Components/moveSelector";
+// import { job } from "../constants/job.js";
 import {
   List,
   ListSubheader,
@@ -21,11 +22,16 @@ import {
 import io from "socket.io-client";
 import GameBoard from "../Components/gameBoard";
 
+import { jobs } from "../constants/job";
+
 const WEBSOCKET_URL = "http://localhost:5000";
 
+// console.log(job);
 function Game(props) {
+  console.log(jobs);
   const wsRef = useRef(null);
   const roomId = useSelector((state) => state.session.roomId);
+  const userId = useSelector((state) => state.session.userId);
   const dispatch = useDispatch();
   const {
     who,
@@ -33,6 +39,8 @@ function Game(props) {
     leftMove,
     virus,
     players,
+    others,
+    setOthers,
     setPlayers,
     setWho,
     setJob,
@@ -57,9 +65,11 @@ function Game(props) {
       //   console.log(data.players);
       //   setPlayers([...data.players]);
       // });
-      wsRef.current.on("gameDetail", (data) => {
-        console.log(data);
 
+      wsRef.current.on("gameDetail", (data) => {
+        setOthers(
+          data.players.filter((player) => player.playerId !== user.data.userId)
+        );
         setPlayers(data.players);
         setVirus(data.virus);
         setWho(data.players[data.who].playerId);
@@ -87,9 +97,9 @@ function Game(props) {
       });
       wsRef.current.emit("queryGame", user.data.gameId);
     });
-
+    // console.log(others);
     //dispatch(Addevent({ event: "room" }));
-
+    console.log(others);
     return () => wsRef.current.disconnect();
   }, []);
   return (
@@ -155,7 +165,7 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
-                  Player 1
+                  {others[0] ? others[0].playerId : null}
                 </Typography>
                 <Typography
                   ml={"10px"}
@@ -163,7 +173,7 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
-                  Job: Medic
+                  Job: {others[0] ? jobs[others[0].playerJob] : null}
                 </Typography>
                 <Button ml={"10px"}>ShowCard</Button>
               </Card>
@@ -175,7 +185,7 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
-                  Player 2
+                  {others[1] ? others[1].playerId : null}
                 </Typography>
                 <Typography
                   ml={"10px"}
@@ -183,7 +193,7 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
-                  Job: Scientist
+                  Job: {others[1] ? jobs[others[1].playerJob] : null}
                 </Typography>
                 <Button ml={"10px"}>ShowCard</Button>
               </Card>
@@ -195,7 +205,7 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
-                  Player 3
+                  {others[2] ? others[2].playerId : null}
                 </Typography>
                 <Typography
                   ml={"10px"}
@@ -203,7 +213,7 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
-                  Job: Builder
+                  Job: {others[2] ? jobs[others[2].playerJob] : null}
                 </Typography>
                 <Button ml={"10px"}>ShowCard</Button>
               </Card>
@@ -218,7 +228,7 @@ function Game(props) {
                 color="text.secondary"
                 gutterBottom
               >
-                Me
+                {userId}
               </Typography>
               <Typography
                 ml={"10px"}

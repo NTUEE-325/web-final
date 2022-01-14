@@ -14,6 +14,7 @@ const useGame = () => {
   const [who, setWho] = useState(0);
   const [leftMove, setLeftMove] = useState(4);
   const [job, setJob] = useState(0);
+  const [others, setOthers] = useState([]);
   return {
     players,
     setPlayers,
@@ -23,6 +24,8 @@ const useGame = () => {
     setDiscardVirusDeck,
     setActiveVirus,
     setVirus,
+    others,
+    setOthers,
     who,
     leftMove,
     job,
