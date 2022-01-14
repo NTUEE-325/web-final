@@ -6,6 +6,7 @@ const UserSchema = new Schema({
   email: String,
   status: String,
   gameId: String,
+  friend: [String],
 });
 const AppendingUserSchema = new Schema({
   userId: String,

@@ -20,6 +20,7 @@ const datas = [
     email: "1@gmail.com",
     status: "offline",
     gameId: "",
+    friend: ["2", "3"],
   },
   {
     userId: "2",

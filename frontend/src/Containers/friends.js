@@ -40,24 +40,31 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function Friends(props) {
   const [friends, setFriends] = useState([]);
+  const [newFriend, setNewFriend] = useState("");
   const userId = useSelector((state) => state.session.userId);
   const wsRef = useRef(null);
 
   console.log(userId);
 
+  const onChange = (event) => {
+    console.log(event.target.value);
+    setNewFriend(event.target.value);
+  };
+
   useEffect(() => {
     const fetch = async () => {
       if (userId) {
-        const { buddy } = await instance.post("/getFriend", {
+        let buddy = [];
+        buddy = await instance.post("/getFriend", {
           userId,
         });
-        console.log(buddy);
-        setFriends(buddy);
+        console.log(buddy.data);
+        setFriends(buddy.data);
       }
     };
 
     fetch();
-  });
+  }, []);
 
   return (
     <>
@@ -76,9 +83,22 @@ export default function Friends(props) {
             <InputBase
               sx={{ ml: 1, flex: 1 }}
               placeholder="Search ID for Friends"
+              onChange={onChange}
               inputProps={{ "aria-label": "search for friends" }}
             />
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+            <IconButton
+              type="submit"
+              sx={{ p: "10px" }}
+              aria-label="search"
+              onClick={async (newFriend) => {
+                const buddy = await instance.post("/addFriend", {
+                  userId,
+                  newFriend,
+                });
+                setFriends(buddy.data);
+                setNewFriend("");
+              }}
+            >
               <SearchIcon />
             </IconButton>
           </Paper>
