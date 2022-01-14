@@ -21,6 +21,8 @@ const GameSchema = new Schema({
   // virus3: [Number],
   // virus4: [Number],
   virus: [Number],
+  life: Number,
+  speed: Number,
 });
 const Game = mongoose.model("Game", GameSchema);
 export default Game;

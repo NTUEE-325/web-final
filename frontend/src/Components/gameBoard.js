@@ -48,12 +48,12 @@ function GameBoard({ virus, players }) {
       <Layer>
         {edges.map((edge, i) => {
           return edge.map((city) => {
-            console.log(
-              cities[i].x,
-              cities[i].y,
-              cities[city].x,
-              cities[city].y
-            );
+            // console.log(
+            //   cities[i].x,
+            //   cities[i].y,
+            //   cities[city].x,
+            //   cities[city].y
+            // );
             return (
               <Line
                 key={i + city}

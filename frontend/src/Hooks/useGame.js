@@ -11,7 +11,7 @@ const useGame = () => {
   const [activeVirus, setActiveVirus] = useState([]);
   const [virus, setVirus] = useState(Array(48).fill(0));
   const [players, setPlayers] = useState([]);
-  const [who, setWho] = useState("");
+  const [who, setWho] = useState(0);
   const [leftMove, setLeftMove] = useState(4);
   const [job, setJob] = useState(0);
   return {

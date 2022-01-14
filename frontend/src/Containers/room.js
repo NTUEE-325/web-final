@@ -61,6 +61,7 @@ export default function Room(props) {
     };
 
     fetch().then(() => {
+      console.log(user.data);
       wsRef.current = io(WEBSOCKET_URL);
 
       wsRef.current.on("room", (data) => {
@@ -68,7 +69,7 @@ export default function Room(props) {
         setPlayers([...data.players]);
       });
       wsRef.current.on("gameStarted", () => {
-        props.navigate(`./game?gameId=${roomId}`);
+        props.navigate(`./game?gameId=${user.data.gameId}`);
       });
       wsRef.current.emit("room", user.data.gameId);
     });
