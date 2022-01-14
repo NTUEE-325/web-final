@@ -38,9 +38,9 @@ router.post("/login", async (req, res) => {
   if (!req.session.userId) {
     req.session.userId = user.userId;
   }
-  if (!req.session.gameId) {
-    req.session.gameId = user.gameId;
-  }
+  //if (!req.session.gameId) {
+  req.session.gameId = user.gameId;
+  //}
   console.log("Successful login");
 
   res.status(200).send();
@@ -152,6 +152,11 @@ router.post("/forgetpw", async (req, res) => {
   console.log("success");
   res.json({ message: "success" });
   //顯示去信箱確認信件
+});
+router.post("/joinRoom", async (req, res) => {
+  const { gameId } = req.body;
+  req.session.gameId = gameId;
+  res.status(200).send();
 });
 router.post("/resetpw", async (req, res) => {
   const { password, secretToken } = req.body;

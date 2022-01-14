@@ -14,6 +14,8 @@ const initGame = async (gameId) => {
   GameDetail["discardPlayerDeck"] = [];
   GameDetail["discardVirusDeck"] = [];
   GameDetail["who"] = 0;
+  GameDetail["life"] = 0;
+  GameDetail["speed"] = 0;
 
   let arr = [...Array(53).keys()];
   arr.sort(() => Math.random() - 0.5);

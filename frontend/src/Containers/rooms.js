@@ -66,6 +66,7 @@ export default function Rooms(props) {
     wsRef.current.on("addRoom", (data) => {
       console.log(data);
       //console.log(socketEvent);
+      instance.post("/joinRoom", { gameId: data.gameId });
       dispatch(Joingame({ roomId: data.gameId }));
       props.navigate(`./room?roomId=${roomId}`);
       //dispatch(Addevent({ event: "addRoom" }));
