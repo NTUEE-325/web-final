@@ -3,6 +3,7 @@ import Appbar from "./appbar";
 import instance from "../instance";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { Login, Joingame, Addevent } from "../features/session/sessionSlices";
@@ -43,20 +44,44 @@ export default function Friends(props) {
   const [newFriend, setNewFriend] = useState("");
   const userId = useSelector((state) => state.session.userId);
   const wsRef = useRef(null);
+  const inputRef = useRef(null);
 
-  console.log(userId);
+  const dispatch = useDispatch();
+
+  //console.log(userId);
 
   const onChange = (event) => {
     console.log(event.target.value);
     setNewFriend(event.target.value);
   };
 
+  const handleAddFriend = async () => {
+    console.log(userId);
+    console.log(newFriend);
+    const buddy = await instance.post("/addFriend", {
+      userId,
+      newFriend,
+    });
+    //inputRef.target.value = "";
+    console.log(buddy.data);
+    setFriends(buddy.data);
+    setNewFriend("");
+  };
+
   useEffect(() => {
     const fetch = async () => {
-      if (userId) {
+      const user = await instance.get("/session");
+      if (user.data) {
+        //console.log(user.data);
+        dispatch(Login({ userId: user.data.userId, roomId: user.data.gameId }));
+        console.log(user.data);
+      } else {
+        props.navigate("./login");
+      }
+      if (user.data.userId) {
         let buddy = [];
         buddy = await instance.post("/getFriend", {
-          userId,
+          userId: user.data.userId,
         });
         console.log(buddy.data);
         setFriends(buddy.data);
@@ -84,22 +109,16 @@ export default function Friends(props) {
               sx={{ ml: 1, flex: 1 }}
               placeholder="Search ID for Friends"
               onChange={onChange}
+              ref={inputRef}
               inputProps={{ "aria-label": "search for friends" }}
             />
             <IconButton
               type="submit"
               sx={{ p: "10px" }}
               aria-label="search"
-              onClick={async (newFriend) => {
-                const buddy = await instance.post("/addFriend", {
-                  userId,
-                  newFriend,
-                });
-                setFriends(buddy.data);
-                setNewFriend("");
-              }}
+              onClick={handleAddFriend}
             >
-              <SearchIcon />
+              <AddIcon />
             </IconButton>
           </Paper>
         </Grid>

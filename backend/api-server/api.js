@@ -270,7 +270,11 @@ router.post("/createRoom", async (req, res) => {
   // 還需redirect到該遊戲頁面
 });
 router.post("/addFriend", async (req, res) => {
-  const { me, buddy } = req.body;
+  //console.log(req.body);
+  const me = req.body.userId;
+  const buddy = req.body.newFriend;
+  //console.log(me);
+  //console.log(buddy);
   if (me === null) {
     return res.status(403).send("user not login");
   }
@@ -280,9 +284,11 @@ router.post("/addFriend", async (req, res) => {
   if (me === buddy) {
     return res.status(403).send("can't add yourself as friend");
   }
-  let myself = User.find({ userId: me });
+  let myself = await User.findOne({ userId: me });
+  console.log(myself.friend);
   if (myself.friend.find((element) => element === buddy) === undefined) {
     myself.friend.push(buddy);
+    myself.save();
     const users = await User.find({});
     const friends = users.filter((user) => {
       return myself.friend.includes(user.userId);
@@ -295,7 +301,14 @@ router.post("/addFriend", async (req, res) => {
     //     status: other.status,
     //   };
     // });
-    return res.status(200).send(friends);
+    const buddies = friends.map((friend) => {
+      return {
+        name: friend.userId,
+        status: friend.status,
+      };
+    });
+    console.log(buddies);
+    return res.status(200).send(buddies);
   } else {
     return res.status(403).send("user already in friend");
   }
