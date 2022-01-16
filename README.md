@@ -12,8 +12,7 @@ sudo apt install redis-server
 - open a terminal and type to start redis server
 
 ```js
-sudo apt update
-sudo apt install redis-server
+redis - server;
 ```
 
 - put MONGO_URL into .env
