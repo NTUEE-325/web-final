@@ -18,6 +18,8 @@ import {
   Card,
   Button,
   Typography,
+  Modal,
+  Box,
 } from "@mui/material";
 import io from "socket.io-client";
 import GameBoard from "../Components/gameBoard";
@@ -25,13 +27,24 @@ import { cities } from "../constants/cities";
 import { jobs } from "../constants/job";
 
 const WEBSOCKET_URL = "http://localhost:5000";
-
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 // console.log(job);
 function Game(props) {
   const wsRef = useRef(null);
   const roomId = useSelector((state) => state.session.roomId);
   const userId = useSelector((state) => state.session.userId);
   const [city, setCity] = useState(0);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const {
     who,
@@ -197,7 +210,34 @@ function Game(props) {
                 >
                   Job: {others[0] ? jobs[others[0].playerJob] : null}
                 </Typography>
-                <Button ml={"10px"}>ShowCard</Button>
+                <Button
+                  ml={"10px"}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
+                  ShowCard
+                </Button>
+                <Modal
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box style={style}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      {others[0] ? others[0].playerId : null}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      Duis mollis, est non commodo luctus, nisi erat porttitor
+                      ligula.
+                    </Typography>
+                  </Box>
+                </Modal>
               </Card>
               <br />
               <Card>
