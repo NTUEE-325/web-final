@@ -165,19 +165,19 @@ db.once("open", () => {
       }
       console.log(data);
       if (data.leftMove === 1) {
-        data.players[data.who].pos = city;
         data.players[data.who].playerHand = data.players[
           data.who
         ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.players[data.who].pos = city;
         data.leftMove = 4;
         data.who = (data.who + 1) % 4;
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
-        data.players[data.who].pos = city;
         data.players[data.who].playerHand = data.players[
           data.who
         ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.players[data.who].pos = city;
         data.leftMove = data.leftMove - 1;
         data.save();
         io.to(gameId).emit("gameDetail", data);
@@ -191,7 +191,7 @@ db.once("open", () => {
       }
       console.log(data);
       if (data.leftMove === 1) {
-        data.players[data.who].pos = city;
+        // data.players[data.who].pos = city;
         data.players[data.who].playerHand = data.players[
           data.who
         ].playerHand.filter((item) => item !== data.players[data.who].pos);
@@ -201,11 +201,69 @@ db.once("open", () => {
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
-        data.players[data.who].pos = city;
+        // data.players[data.who].pos = city;
         data.players[data.who].playerHand = data.players[
           data.who
         ].playerHand.filter((item) => item !== data.players[data.who].pos);
         data.lab.push(data.players[data.who].pos);
+        data.leftMove = data.leftMove - 1;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      }
+    });
+    socket.on("lab", async ({ gameId, city }) => {
+      console.log("lab");
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      if (data.leftMove === 1) {
+        // data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.lab.push(data.players[data.who].pos);
+        data.leftMove = 4;
+        data.who = (data.who + 1) % 4;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      } else {
+        // data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.lab.push(data.players[data.who].pos);
+        data.leftMove = data.leftMove - 1;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      }
+    });
+    socket.on("treat", async ({ gameId, city }) => {
+      console.log("treat");
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      if (data.leftMove === 1) {
+        // data.players[data.who].pos = city;
+        console.log(data.virus);
+        console.log(data.players[data.who].pos);
+        if (data.virus[data.players[data.who].pos] > 0) {
+          data.virus[data.players[data.who].pos] =
+            data.virus[data.players[data.who].pos] - 1;
+        }
+        data.leftMove = 4;
+        data.who = (data.who + 1) % 4;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      } else {
+        // data.players[data.who].pos = city;
+        if (data.virus[data.players[data.who].pos] > 0) {
+          data.virus[data.players[data.who].pos] =
+            data.virus[data.players[data.who].pos] - 1;
+        }
         data.leftMove = data.leftMove - 1;
         data.save();
         io.to(gameId).emit("gameDetail", data);

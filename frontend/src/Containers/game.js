@@ -143,6 +143,9 @@ function Game(props) {
   const build_lab = () => {
     wsRef.current.emit("lab", { gameId: roomId, city });
   };
+  const treat = () => {
+    wsRef.current.emit("treat", { gameId: roomId });
+  };
   return (
     <div>
       <Appbar navigate={props.navigate} />
@@ -181,6 +184,7 @@ function Game(props) {
                 fly={fly}
                 fly={flyfrom}
                 lab={build_lab}
+                treat={treat}
               ></MoveSelector>
               {/* 456 */}
               {/* <Grid innerContainer>
