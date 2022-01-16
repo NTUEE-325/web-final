@@ -27,6 +27,7 @@ export default function MoveSelector({
   fly,
   flyfrom,
   lab,
+  treat,
 }) {
   console.log(pos);
   // console.log("city", city);
@@ -100,7 +101,7 @@ export default function MoveSelector({
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton disabled={true}>
+          <ListItemButton onClick={() => treat()}>
             <ListItemIcon>
               <MedicalServicesIcon />
             </ListItemIcon>
@@ -108,7 +109,7 @@ export default function MoveSelector({
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disabled={true}>
             <ListItemIcon>
               <SchoolIcon />
             </ListItemIcon>
