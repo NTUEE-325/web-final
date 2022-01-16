@@ -9,7 +9,7 @@
     "start-old": "cd frontend && yarn start",
     "socket-server": "cd backend && yarn socket-server",
     "api-server": "cd backend && yarn api-server",
-    "initialize": "node ./backend/api-server/initdata.js",
+    "initialize": "cd backend && node ./api-server/initdata.js",
     "mailtest": "node ./backend/api-server/sendmail.js"
   }
 }
