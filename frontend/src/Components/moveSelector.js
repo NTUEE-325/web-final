@@ -117,7 +117,7 @@ export default function MoveSelector({
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disabled>
             <ListItemIcon>
               <ScienceIcon />
             </ListItemIcon>
