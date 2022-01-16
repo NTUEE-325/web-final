@@ -56,6 +56,8 @@ function Game(props) {
     players,
     others,
     pos,
+    lab,
+    setLab,
     setPos,
     setOthers,
     setPlayers,
@@ -92,6 +94,7 @@ function Game(props) {
           data.players.filter((player) => player.playerId === user.data.userId)
         );
         // setPos(data.pos);
+        setLab(data.lab);
         setPos(data.players.map((player) => player.pos));
         setPlayers(data.players);
         setVirus(data.virus);
@@ -132,7 +135,13 @@ function Game(props) {
     wsRef.current.emit("move", { gameId: roomId, city });
   };
   const fly = () => {
-    wsRef.current.emit("move", { gameId: roomId, city });
+    wsRef.current.emit("fly", { gameId: roomId, city });
+  };
+  const flyfrom = () => {
+    wsRef.current.emit("flyfrom", { gameId: roomId, city });
+  };
+  const build_lab = () => {
+    wsRef.current.emit("lab", { gameId: roomId, city });
   };
   return (
     <div>
@@ -169,6 +178,9 @@ function Game(props) {
                 pos={pos[who] ? pos[who] : 2}
                 hand={players[who] ? players[who].playerHand : []}
                 move={move}
+                fly={fly}
+                fly={flyfrom}
+                lab={build_lab}
               ></MoveSelector>
               {/* 456 */}
               {/* <Grid innerContainer>
@@ -348,9 +360,21 @@ function Game(props) {
                 Job: {me.length > 0 ? jobs[me[0].playerJob] : null}
               </Typography>
               {me.length > 0
-                ? me[0].playerHand.map((card) => <Button>{card}</Button>)
+                ? me[0].playerHand.map((card) => (
+                    <Button>{cities[card].name}</Button>
+                  ))
                 : null}
             </Card>
+            <Button>Labs:</Button>
+            {lab.length > 0 ? (
+              <>
+                {lab.map((item) => {
+                  return <Button>{item}</Button>;
+                })}
+              </>
+            ) : (
+              "None"
+            )}
           </Grid>
           {/* <Card>
             <Typography

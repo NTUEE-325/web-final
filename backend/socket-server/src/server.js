@@ -131,6 +131,86 @@ db.once("open", () => {
         io.to(gameId).emit("gameDetail", data);
       }
     });
+    socket.on("fly", async ({ gameId, city }) => {
+      console.log("fly");
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      if (data.leftMove === 1) {
+        data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== city);
+        data.leftMove = 4;
+        data.who = (data.who + 1) % 4;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      } else {
+        data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== city);
+        data.leftMove = data.leftMove - 1;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      }
+    });
+    socket.on("flyfrom", async ({ gameId, city }) => {
+      console.log("flyrom");
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      if (data.leftMove === 1) {
+        data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.leftMove = 4;
+        data.who = (data.who + 1) % 4;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      } else {
+        data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.leftMove = data.leftMove - 1;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      }
+    });
+    socket.on("lab", async ({ gameId, city }) => {
+      console.log("lab");
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      if (data.leftMove === 1) {
+        data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.lab.push(data.players[data.who].pos);
+        data.leftMove = 4;
+        data.who = (data.who + 1) % 4;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      } else {
+        data.players[data.who].pos = city;
+        data.players[data.who].playerHand = data.players[
+          data.who
+        ].playerHand.filter((item) => item !== data.players[data.who].pos);
+        data.lab.push(data.players[data.who].pos);
+        data.leftMove = data.leftMove - 1;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      }
+    });
     socket.on("queryGame", async (gameId) => {
       console.log("data queried");
       console.log(gameId);

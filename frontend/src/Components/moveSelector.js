@@ -19,11 +19,27 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import { edges } from "../constants/edges";
 import { cities } from "../constants/cities";
 
-export default function MoveSelector({ city, pos, hand, move, fly }) {
-  // console.log(pos);
+export default function MoveSelector({
+  city,
+  pos,
+  hand,
+  move,
+  fly,
+  flyfrom,
+  lab,
+}) {
+  console.log(pos);
   // console.log("city", city);
   // console.log(hand);
-  // console.log(hand);
+  console.log(hand);
+  const check = () => {
+    console.log(hand.filter((card) => card < 12).length);
+    if (hand.filter((card) => card < 12).length > 4) {
+      console.log("true");
+      return true;
+    }
+    return false;
+  };
   return (
     <Box
       sx={{
@@ -57,15 +73,18 @@ export default function MoveSelector({ city, pos, hand, move, fly }) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon diabled={!hand.includes(city)}>
+          <ListItemButton
+            disabled={!hand.includes(pos)}
+            onClick={() => flyfrom()}
+          >
+            <ListItemIcon>
               <FlightTakeoffIcon />
             </ListItemIcon>
             <ListItemText primary={"Charter Flight：" + cities[city].name} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disabled={true}>
             <ListItemIcon>
               <CompareArrowsIcon />
             </ListItemIcon>
@@ -73,7 +92,7 @@ export default function MoveSelector({ city, pos, hand, move, fly }) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disabled={!hand.includes(pos)} onClick={() => lab()}>
             <ListItemIcon>
               <OtherHousesIcon />
             </ListItemIcon>
@@ -81,7 +100,7 @@ export default function MoveSelector({ city, pos, hand, move, fly }) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton disabled={true}>
             <ListItemIcon>
               <MedicalServicesIcon />
             </ListItemIcon>
