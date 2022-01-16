@@ -182,7 +182,7 @@ function Game(props) {
                 hand={players[who] ? players[who].playerHand : []}
                 move={move}
                 fly={fly}
-                fly={flyfrom}
+                flyfrom={flyfrom}
                 lab={build_lab}
                 treat={treat}
               ></MoveSelector>
