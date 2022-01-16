@@ -30,11 +30,11 @@ import { jobs } from "../constants/job";
 const WEBSOCKET_URL = "http://localhost:5000";
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "10%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
+  bgcolor: "white",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
@@ -46,6 +46,7 @@ function Game(props) {
   const userId = useSelector((state) => state.session.userId);
   const [city, setCity] = useState(0);
   const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState(null);
   const dispatch = useDispatch();
   const {
     who,
@@ -195,7 +196,7 @@ function Game(props) {
               <Card>
                 <Typography
                   ml={"10px"}
-                  sx={{ fontSize: 26 }}
+                  sx={{ fontSize: 20 }}
                   color="text.secondary"
                   gutterBottom
                 >
@@ -218,6 +219,7 @@ function Game(props) {
                 <Button
                   ml={"10px"}
                   onClick={() => {
+                    setCurrent(others[0]);
                     setOpen(true);
                   }}
                 >
@@ -238,8 +240,11 @@ function Game(props) {
                       {others[0] ? others[0].playerId : null}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      Duis mollis, est non commodo luctus, nisi erat porttitor
-                      ligula.
+                      {current
+                        ? current.playerHand.map((card) => (
+                            <Button>{card}</Button>
+                          ))
+                        : null}
                     </Typography>
                   </Box>
                 </Modal>
@@ -248,10 +253,15 @@ function Game(props) {
               <Card>
                 <Typography
                   ml={"10px"}
-                  sx={{ fontSize: 26 }}
+                  sx={{ fontSize: 20 }}
                   color="text.secondary"
                   gutterBottom
                 >
+                  {others[1] && players[who] ? (
+                    players[who].playerId === others[1].playerId ? (
+                      <CheckIcon />
+                    ) : null
+                  ) : null}
                   {others[1] ? others[1].playerId : null}
                   {others[1] ? "：" + cities[others[1].pos].name : null}
                 </Typography>
@@ -263,16 +273,29 @@ function Game(props) {
                 >
                   Job: {others[1] ? jobs[others[1].playerJob] : null}
                 </Typography>
-                <Button ml={"10px"}>ShowCard</Button>
+                <Button
+                  onClick={() => {
+                    setCurrent(others[1]);
+                    setOpen(true);
+                  }}
+                  ml={"10px"}
+                >
+                  ShowCard
+                </Button>
               </Card>
               <br />
               <Card>
                 <Typography
                   ml={"10px"}
-                  sx={{ fontSize: 26 }}
+                  sx={{ fontSize: 20 }}
                   color="text.secondary"
                   gutterBottom
                 >
+                  {others[2] && players[who] ? (
+                    players[who].playerId === others[2].playerId ? (
+                      <CheckIcon />
+                    ) : null
+                  ) : null}
                   {others[2] ? others[2].playerId : null}
                   {others[2] ? "：" + cities[others[2].pos].name : null}
                 </Typography>
@@ -284,7 +307,15 @@ function Game(props) {
                 >
                   Job: {others[2] ? jobs[others[2].playerJob] : null}
                 </Typography>
-                <Button ml={"10px"}>ShowCard</Button>
+                <Button
+                  onClick={() => {
+                    setCurrent(others[2]);
+                    setOpen(true);
+                  }}
+                  ml={"10px"}
+                >
+                  ShowCard
+                </Button>
               </Card>
             </Grid>
           </Grid>
@@ -297,6 +328,11 @@ function Game(props) {
                 color="text.secondary"
                 gutterBottom
               >
+                {players[who] ? (
+                  players[who].playerId === userId ? (
+                    <CheckIcon />
+                  ) : null
+                ) : null}
                 {userId}
                 {me.length > 0 ? "：" + cities[me[0].pos].name : null}
               </Typography>
@@ -308,6 +344,9 @@ function Game(props) {
               >
                 Job: {me.length > 0 ? jobs[me[0].playerJob] : null}
               </Typography>
+              {me.length > 0
+                ? me[0].playerHand.map((card) => <Button>{card}</Button>)
+                : null}
             </Card>
           </Grid>
           {/* <Card>
