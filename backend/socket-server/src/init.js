@@ -13,7 +13,7 @@ const initGame = async (gameId) => {
   GameDetail["activeVirus"] = new Array(4).fill(false);
   GameDetail["discardPlayerDeck"] = [];
   GameDetail["discardVirusDeck"] = [];
-  GameDetail["lab"] = [];
+  GameDetail["lab"] = [2];
   GameDetail["who"] = 0;
   GameDetail["life"] = 0;
   GameDetail["speed"] = 0;
@@ -42,7 +42,7 @@ const initGame = async (gameId) => {
 
   for (let i = 0; i < 5; i++) {
     let random = Math.floor(Math.random() * 10) + i * 10;
-    arr.splice(random, 0, -1);
+    //arr.splice(random, 0, -1);
   }
   GameDetail["playerDeck"] = arr;
   let arr3 = [...Array(48).keys()];

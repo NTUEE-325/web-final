@@ -122,6 +122,8 @@ db.once("open", () => {
         data.players[data.who].pos = city;
         data.leftMove = 4;
         data.who = (data.who + 1) % 4;
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
@@ -145,6 +147,8 @@ db.once("open", () => {
         ].playerHand.filter((item) => item !== city);
         data.leftMove = 4;
         data.who = (data.who + 1) % 4;
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
@@ -171,6 +175,8 @@ db.once("open", () => {
         data.players[data.who].pos = city;
         data.leftMove = 4;
         data.who = (data.who + 1) % 4;
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
@@ -198,6 +204,8 @@ db.once("open", () => {
         data.lab.push(data.players[data.who].pos);
         data.leftMove = 4;
         data.who = (data.who + 1) % 4;
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
@@ -225,6 +233,8 @@ db.once("open", () => {
         ].playerHand.filter((item) => item !== data.players[data.who].pos);
         data.lab.push(data.players[data.who].pos);
         data.leftMove = 4;
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
         data.who = (data.who + 1) % 4;
         data.save();
         io.to(gameId).emit("gameDetail", data);
@@ -256,6 +266,8 @@ db.once("open", () => {
         }
         data.leftMove = 4;
         data.who = (data.who + 1) % 4;
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
+        data.players[data.who].playerHand.push(data.playerDeck.pop());
         data.save();
         io.to(gameId).emit("gameDetail", data);
       } else {
