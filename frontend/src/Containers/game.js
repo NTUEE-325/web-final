@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import instance from "../instance";
 import { Login } from "../features/session/sessionSlices";
 import MoveSelector from "../Components/moveSelector";
-// import { job } from "../constants/job.js";
+import CheckIcon from "@mui/icons-material/Check"; // import { job } from "../constants/job.js";
 import {
   List,
   ListSubheader,
@@ -108,7 +108,8 @@ function Game(props) {
   }, []);
   // console.log(players);
   // console.log(who);
-  const move = async () => {
+  const move = () => {
+    console.log("move", roomId, city);
     wsRef.current.emit("move", { gameId: roomId, city });
   };
   return (
@@ -180,6 +181,11 @@ function Game(props) {
                   color="text.secondary"
                   gutterBottom
                 >
+                  {others[0] && players[who] ? (
+                    players[who].playerId === others[0].playerId ? (
+                      <CheckIcon />
+                    ) : null
+                  ) : null}
                   {others[0] ? others[0].playerId : null}
                   {others[0] ? "：" + cities[others[0].pos].name : null}
                 </Typography>

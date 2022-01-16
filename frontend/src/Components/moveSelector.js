@@ -37,7 +37,10 @@ export default function MoveSelector({ city, pos, hand, move }) {
         <ListItem disablePadding>
           <ListItemButton
             disabled={!edges[pos].includes(city)}
-            onClick={() => move()}
+            onClick={() => {
+              alert("hi");
+              move();
+            }}
           >
             <ListItemIcon>
               <CommuteIcon />

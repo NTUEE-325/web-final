@@ -76,14 +76,21 @@ db.once("open", () => {
       }
     });
     socket.on("move", async ({ gameId, city }) => {
+      console.log("move");
       const data = await Game.findOne({ id: gameId });
       if (!data) {
         return;
       }
+      console.log(data);
       if (data.leftMove === 1) {
+        data.players[data.who].pos = city;
+        data.leftMove = 4;
+        data.who = (data.who + 1) % 4;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
       } else {
         data.players[data.who].pos = city;
-        data.leftMove -= 1;
+        data.leftMove = data.leftMove - 1;
         data.save();
         io.to(gameId).emit("gameDetail", data);
       }
