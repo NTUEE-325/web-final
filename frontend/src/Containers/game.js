@@ -20,6 +20,7 @@ import {
   Typography,
   Modal,
   Box,
+  stepIconClasses,
 } from "@mui/material";
 import io from "socket.io-client";
 import GameBoard from "../Components/gameBoard";
@@ -54,6 +55,7 @@ function Game(props) {
     players,
     others,
     pos,
+    setPos,
     setOthers,
     setPlayers,
     setWho,
@@ -81,12 +83,15 @@ function Game(props) {
       // });
 
       wsRef.current.on("gameDetail", (data) => {
+        console.log(data);
         setOthers(
           data.players.filter((player) => player.playerId !== user.data.userId)
         );
         setMe(
           data.players.filter((player) => player.playerId === user.data.userId)
         );
+        // setPos(data.pos);
+        setPos(data.players.map((player) => player.pos));
         setPlayers(data.players);
         setVirus(data.virus);
         setWho(data.who);

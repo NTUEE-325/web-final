@@ -38,7 +38,7 @@ export default function MoveSelector({ city, pos, hand, move }) {
           <ListItemButton
             disabled={!edges[pos].includes(city)}
             onClick={() => {
-              alert("hi");
+              // alert("hi");
               move();
             }}
           >
