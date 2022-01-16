@@ -19,7 +19,7 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import { edges } from "../constants/edges";
 import { cities } from "../constants/cities";
 
-export default function MoveSelector({ city, pos, hand }) {
+export default function MoveSelector({ city, pos, hand, move }) {
   // console.log(pos);
   // console.log("city", city);
   // console.log(hand);
@@ -35,7 +35,10 @@ export default function MoveSelector({ city, pos, hand }) {
     >
       <List>
         <ListItem disablePadding>
-          <ListItemButton disabled={!edges[pos].includes(city)}>
+          <ListItemButton
+            disabled={!edges[pos].includes(city)}
+            onClick={() => move()}
+          >
             <ListItemIcon>
               <CommuteIcon />
             </ListItemIcon>

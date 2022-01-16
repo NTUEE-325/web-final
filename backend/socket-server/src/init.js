@@ -16,7 +16,7 @@ const initGame = async (gameId) => {
   GameDetail["who"] = 0;
   GameDetail["life"] = 0;
   GameDetail["speed"] = 0;
-
+  GameDetail["leftMove"] = 4;
   let arr = [...Array(53).keys()];
   arr.sort(() => Math.random() - 0.5);
   if (playerNum === 4) {

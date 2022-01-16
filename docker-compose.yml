@@ -3,7 +3,7 @@ version: "3.7"
 services:
   frontend:
     image: node:14-alpine
-    command: sh -c "cd frontend && yarn build && yarn start"
+    command: sh -c "cd frontend && yarn start"
     ports:
       - 3000:3000
     working_dir: /app

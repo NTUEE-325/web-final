@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import io from "socket.io-client";
 import GameBoard from "../Components/gameBoard";
-
+import { cities } from "../constants/cities";
 import { jobs } from "../constants/job";
 
 const WEBSOCKET_URL = "http://localhost:5000";
@@ -108,6 +108,9 @@ function Game(props) {
   }, []);
   // console.log(players);
   // console.log(who);
+  const move = async () => {
+    wsRef.current.emit("move", { gameId: roomId, city });
+  };
   return (
     <div>
       <Appbar navigate={props.navigate} />
@@ -142,6 +145,7 @@ function Game(props) {
                 city={city}
                 pos={pos[who] ? pos[who] : 2}
                 hand={players[who] ? players[who].playerHand : []}
+                move={move}
               ></MoveSelector>
               {/* 456 */}
               {/* <Grid innerContainer>
@@ -177,6 +181,7 @@ function Game(props) {
                   gutterBottom
                 >
                   {others[0] ? others[0].playerId : null}
+                  {others[0] ? "：" + cities[others[0].pos].name : null}
                 </Typography>
                 <Typography
                   ml={"10px"}
@@ -197,6 +202,7 @@ function Game(props) {
                   gutterBottom
                 >
                   {others[1] ? others[1].playerId : null}
+                  {others[1] ? "：" + cities[others[1].pos].name : null}
                 </Typography>
                 <Typography
                   ml={"10px"}
@@ -217,6 +223,7 @@ function Game(props) {
                   gutterBottom
                 >
                   {others[2] ? others[2].playerId : null}
+                  {others[2] ? "：" + cities[others[2].pos].name : null}
                 </Typography>
                 <Typography
                   ml={"10px"}
@@ -240,6 +247,7 @@ function Game(props) {
                 gutterBottom
               >
                 {userId}
+                {me.length > 0 ? "：" + cities[me[0].pos].name : null}
               </Typography>
               <Typography
                 ml={"10px"}

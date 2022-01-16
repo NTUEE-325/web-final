@@ -75,6 +75,19 @@ db.once("open", () => {
         io.emit("addRoom", { msg: "failed", gameId: "" });
       }
     });
+    socket.on("move", async ({ gameId, city }) => {
+      const data = await Game.findOne({ id: gameId });
+      if (!data) {
+        return;
+      }
+      if (data.leftMove === 1) {
+      } else {
+        data.players[data.who].pos = city;
+        data.leftMove -= 1;
+        data.save();
+        io.to(gameId).emit("gameDetail", data);
+      }
+    });
     socket.on("queryGame", async (gameId) => {
       console.log("data queried");
       console.log(gameId);
@@ -83,6 +96,7 @@ db.once("open", () => {
         return;
       }
       console.log(data);
+      socket.join(gameId);
       io.emit("gameDetail", data);
     });
     socket.on("startGame", (gameId) => {
