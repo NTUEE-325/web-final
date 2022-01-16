@@ -81,17 +81,21 @@ db.once("open", () => {
       const game = await Game.findOne({ id: roomId });
       const user = await User.findOne({ userId: friendId });
       if (friendId === null) {
-        console.log("Player not login yet");
+        console.log("Player doesn't exist.");
         io.emit("addRoom", { msg: "failed", gameId: "" });
         return;
       }
       if (game.players.length < 4) {
         if (user.gameId === "") {
+          console.log("succuessfully invite join room");
           socket.join(roomId);
 
-          console.log("successful join room");
           io.emit("addRoom", { msg: "successful", gameId: roomId });
-          game.players.push({ playerId: userId, playerHand: [], playerJob: 0 });
+          game.players.push({
+            playerId: friendId,
+            playerHand: [],
+            playerJob: 0,
+          });
           console.log(game);
           game.save();
           user.gameId = roomId;

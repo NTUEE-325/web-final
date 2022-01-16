@@ -79,6 +79,21 @@ export default function Friends(props) {
     setFriends(buddy.data);
   };
 
+  const handleInviteFriend = async (name) => {
+    const room = await instance.post("/room", { userId });
+    const roomId = room.data.roomId;
+    console.log(roomId);
+
+    wsRef.current.emit("inviteJoinRoom", {
+      friendId: name,
+      roomId: roomId,
+    });
+    // await instance.post("/addFriend", {
+    //   userId,
+    //   newFriend,
+    // });
+  };
+
   useEffect(() => {
     const fetch = async () => {
       const user = await instance.get("/session");
@@ -98,6 +113,15 @@ export default function Friends(props) {
         setFriends(buddy.data);
       }
     };
+    wsRef.current = io(WEBSOCKET_URL);
+    wsRef.current.on("addRoom", (data) => {
+      // console.log(data);
+      // //console.log(socketEvent);
+      // instance.post("/joinRoom", { gameId: data.gameId });
+      // dispatch(Joingame({ roomId: data.gameId }));
+      // props.navigate(`./room?roomId=${roomId}`);
+      //dispatch(Addevent({ event: "addRoom" }));
+    });
 
     fetch();
   }, []);
@@ -153,13 +177,22 @@ export default function Friends(props) {
               >
                 <CardContent sx={{ alignItems: "center" }}>
                   <Grid container spacing={1}>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <Item>{friend.name}</Item>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <Item>{friend.status}</Item>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
+                      <Button
+                        sx={{ float: "right" }}
+                        //disabled={friend.status === "online" ? false : true}
+                        onClick={() => handleInviteFriend(friend.name)}
+                      >
+                        Invite to game
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
                       <Button
                         sx={{ float: "right" }}
                         onClick={() => handleDeleteFriend(friend.name)}
