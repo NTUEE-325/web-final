@@ -21,7 +21,7 @@ const sendEmail = async (email, purpose, data) => {
       password: data.password,
       email: data.email,
       status: "signup",
-      gameId: "123",
+      gameId: "",
       secretToken: secretToken,
       active: false,
     };
@@ -49,7 +49,7 @@ const sendEmail = async (email, purpose, data) => {
       password: data.password,
       email: data.email,
       status: "forgetPassword",
-      gameId: "123",
+      gameId: "",
       secretToken: secretToken,
       active: false,
     };

@@ -186,7 +186,7 @@ export default function Friends(props) {
                     <Grid item xs={3}>
                       <Button
                         sx={{ float: "right" }}
-                        //disabled={friend.status === "online" ? false : true}
+                        //disabled={friend.status === "signUp" ? false : true}
                         onClick={() => handleInviteFriend(friend.name)}
                       >
                         Invite to game
