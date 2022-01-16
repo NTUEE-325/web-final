@@ -75,6 +75,38 @@ db.once("open", () => {
         io.emit("addRoom", { msg: "failed", gameId: "" });
       }
     });
+    socket.on("inviteJoinRoom", async ({ friendId, roomId }) => {
+      console.log(`invite ${friendId} joinRoom`);
+      //console.log(userId);
+      const game = await Game.findOne({ id: roomId });
+      const user = await User.findOne({ userId: friendId });
+      if (friendId === null) {
+        console.log("Player not login yet");
+        io.emit("addRoom", { msg: "failed", gameId: "" });
+        return;
+      }
+      if (game.players.length < 4) {
+        if (user.gameId === "") {
+          socket.join(roomId);
+
+          console.log("successful join room");
+          io.emit("addRoom", { msg: "successful", gameId: roomId });
+          game.players.push({ playerId: userId, playerHand: [], playerJob: 0 });
+          console.log(game);
+          game.save();
+          user.gameId = roomId;
+          user.save();
+          const { player, difficulty } = game;
+          io.to(roomId).emit("room", { player, difficulty });
+        } else {
+          console.log("Player already in game");
+          io.emit("addRoom", { msg: "failed", gameId: "" });
+        }
+      } else {
+        console.log("Player already full");
+        io.emit("addRoom", { msg: "failed", gameId: "" });
+      }
+    });
     socket.on("move", async ({ gameId, city }) => {
       const data = await Game.findOne({ id: gameId });
       if (!data) {
