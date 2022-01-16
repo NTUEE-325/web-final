@@ -131,6 +131,9 @@ function Game(props) {
     console.log("move", roomId, city);
     wsRef.current.emit("move", { gameId: roomId, city });
   };
+  const fly = () => {
+    wsRef.current.emit("move", { gameId: roomId, city });
+  };
   return (
     <div>
       <Appbar navigate={props.navigate} />
@@ -237,12 +240,12 @@ function Game(props) {
                       variant="h6"
                       component="h2"
                     >
-                      {others[0] ? others[0].playerId : null}
+                      {current ? current.playerId : null}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       {current
                         ? current.playerHand.map((card) => (
-                            <Button>{card}</Button>
+                            <Button>{cities[card].name}</Button>
                           ))
                         : null}
                     </Typography>
